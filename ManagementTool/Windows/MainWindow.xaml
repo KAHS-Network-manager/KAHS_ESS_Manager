@@ -1,0 +1,243 @@
+﻿<Window x:Class="ManagementTool.Windows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="한국 애니메이션 고등학교 작화 관리 시스템" Height="897" Width="1366" ResizeMode="NoResize" Closed="Window_Closed">
+    <Window.Resources>
+        <Style TargetType="{x:Type ListViewItem}">
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="BorderBrush" Value="#000000" />
+            <Setter Property="BorderThickness" Value="0.5,0.1,0.5,0.1" />
+            <Setter Property="Margin" Value="1,0,1,0" />
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Image Margin="60,36,1046,788" Source="../Images/logo2.png" Stretch="Fill" />
+        <ComboBox x:Name="CbGrade" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Margin="540,50,0,0"
+                  Height="30" VerticalContentAlignment="Center" TabIndex="0">
+            <ComboBoxItem Content="1" HorizontalAlignment="Left" Width="77" VerticalContentAlignment="Center"
+                          HorizontalContentAlignment="Center" Height="30" />
+            <ComboBoxItem Content="2" HorizontalAlignment="Left" Width="77" Height="30"
+                          VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+            <ComboBoxItem Content="3" HorizontalAlignment="Left" Width="77" Height="30"
+                          HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        </ComboBox>
+        <Label Content="학년" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="620,50,0,0" Height="30"
+               Width="49" VerticalContentAlignment="Center" />
+        <ComboBox x:Name="CbClass" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Margin="669,50,0,0"
+                  Height="30" VerticalContentAlignment="Center" TabIndex="1">
+            <ComboBoxItem Content="전체" HorizontalAlignment="Left" Width="77" HorizontalContentAlignment="Center"
+                          VerticalContentAlignment="Center" />
+            <ComboBoxItem Content="1" HorizontalAlignment="Left" Width="77" HorizontalContentAlignment="Center"
+                          VerticalContentAlignment="Center" />
+            <ComboBoxItem Content="2" HorizontalAlignment="Left" Width="77" HorizontalContentAlignment="Center"
+                          VerticalContentAlignment="Center" />
+            <ComboBoxItem Content="3" HorizontalAlignment="Left" Width="77" HorizontalContentAlignment="Center"
+                          VerticalContentAlignment="Center" />
+            <ComboBoxItem Content="4" HorizontalAlignment="Left" Width="77" HorizontalContentAlignment="Center"
+                          VerticalContentAlignment="Center" />
+        </ComboBox>
+        <Label Content="반" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="749,50,0,0" Height="30"
+               Width="49" VerticalContentAlignment="Center" />
+        <Button x:Name="BtInqury" Content="조회" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75"
+                Margin="798,50,0,0" RenderTransformOrigin="0.653,0.262" Height="30" Click="BtInqury_Click"
+                TabIndex="2" />
+        <Button Content="게시판" HorizontalAlignment="Left" VerticalAlignment="Top" Width="88" Margin="980,50,0,0"
+                Height="30" Click="Button_Click" TabIndex="3" />
+        <Button x:Name="BtDone" Content="완료" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"
+                Margin="1175,50,0,0" Height="30" Click="BtDone_Click" />
+        <ListView x:Name="LvStudentData" HorizontalAlignment="Left" Height="720" VerticalAlignment="Top"
+                  HorizontalContentAlignment="Center" Width="1360" Margin="0,148,0,0"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  SelectionChanged="LvStudentData_SelectionChanged">
+            <ListView.View>
+                <GridView x:Name="LvStudentDataControl">
+                    <GridViewColumn Header="학번" Width="100">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Tag="Number" Text="{Binding Number}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="이름" Width="100">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Tag="Name" Text="{Binding Name}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="기숙사" Width="45">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox Tag="Prep" IsChecked="{Binding Prep}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="외출" Width="35">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox Tag="Outing" IsChecked="{Binding Outing}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="외출 허가" Width="60">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox Tag="OutingAuthorization" IsChecked="{Binding OutingAuthorization}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="외출시작시간" Width="90">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox Tag="OutingStartTime" Width="70" SelectedIndex="{Binding OutingStartTime}">
+                                    <ComboBoxItem Content="17:00" HorizontalAlignment="Center" Width="67" />
+                                    <ComboBoxItem Content="17:30" HorizontalAlignment="Center" Width="67" />
+                                    <ComboBoxItem Content="18:00" HorizontalAlignment="Center" Width="67" />
+                                    <ComboBoxItem Content="18:30" HorizontalAlignment="Center" Width="67" />
+                                    <ComboBoxItem Content="19:00" HorizontalAlignment="Center" Width="67" />
+                                    <ComboBoxItem Content="19:30" HorizontalAlignment="Center" Width="67" />
+                                    <ComboBoxItem Content="20:00" HorizontalAlignment="Center" Width="67" />
+                                    <ComboBoxItem Content="20:30" HorizontalAlignment="Center" Width="67" />
+                                    <ComboBoxItem Content="21:00" HorizontalAlignment="Center" Width="67" />
+                                    <ComboBoxItem Content="21:30" HorizontalAlignment="Center" Width="67" />
+                                    <ComboBoxItem Content="22:00" HorizontalAlignment="Center" Width="67" />
+                                    <ComboBoxItem Content="22:30" HorizontalAlignment="Center" Width="67" />
+                                    <ComboBoxItem Content="23:00" HorizontalAlignment="Center" Width="67" />
+                                    <ComboBoxItem Content="23:30" HorizontalAlignment="Center" Width="67" />
+                                </ComboBox>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="외출복귀시간" Width="90">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox Tag="OutingReturnTime" Width="70" SelectedIndex="{Binding OutingReturnTime}">
+                                    <ComboBoxItem Content="17:00" HorizontalAlignment="Center" Width="67" />
+                                    <ComboBoxItem Content="17:30" HorizontalAlignment="Center" Width="67" />
+                                    <ComboBoxItem Content="18:00" HorizontalAlignment="Center" Width="67" />
+                                    <ComboBoxItem Content="18:30" HorizontalAlignment="Center" Width="67" />
+                                    <ComboBoxItem Content="19:00" HorizontalAlignment="Center" Width="67" />
+                                    <ComboBoxItem Content="19:30" HorizontalAlignment="Center" Width="67" />
+                                    <ComboBoxItem Content="20:00" HorizontalAlignment="Center" Width="67" />
+                                    <ComboBoxItem Content="20:30" HorizontalAlignment="Center" Width="67" />
+                                    <ComboBoxItem Content="21:00" HorizontalAlignment="Center" Width="67" />
+                                    <ComboBoxItem Content="21:30" HorizontalAlignment="Center" Width="67" />
+                                    <ComboBoxItem Content="22:00" HorizontalAlignment="Center" Width="67" />
+                                    <ComboBoxItem Content="22:30" HorizontalAlignment="Center" Width="67" />
+                                    <ComboBoxItem Content="23:00" HorizontalAlignment="Center" Width="67" />
+                                    <ComboBoxItem Content="23:30" HorizontalAlignment="Center" Width="67" />
+                                </ComboBox>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="학원여부" Width="60">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox Tag="Academy" IsChecked="{Binding Academy}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="월" Width="40">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox Tag="Monday" IsChecked="{Binding Monday}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="화" Width="40">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox Tag="Tuesday" IsChecked="{Binding Tuesday}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="수" Width="40">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox Tag="Wednesday" IsChecked="{Binding Wednesday}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="목" Width="40">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox Tag="Thursday" IsChecked="{Binding Thursday}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="금" Width="40">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox Tag="Friday" IsChecked="{Binding Friday}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="학원시작시간" Width="100">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox x:Name="TimeCombo1" Tag="AcademyStartTime" Width="80"
+                                          SelectedIndex="{Binding AcademyStartTime}">
+                                    <ComboBoxItem Content="17:00" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="17:30" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="18:00" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="18:30" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="19:00" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="19:30" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="20:00" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="20:30" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="21:00" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="21:30" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="22:00" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="22:30" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="23:00" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="23:30" HorizontalAlignment="Center" Width="77" />
+                                </ComboBox>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="학원종료시간" Width="100">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox Tag="AcademyEndTime" Width="80" SelectedIndex="{Binding AcademyEndTime}">
+                                    <ComboBoxItem Content="17:00" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="17:30" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="18:00" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="18:30" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="19:00" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="19:30" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="20:00" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="20:30" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="21:00" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="21:30" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="22:00" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="22:30" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="23:00" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="23:30" HorizontalAlignment="Center" Width="77" />
+                                </ComboBox>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="비고" Width="375">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Tag="Specificant" Width="320" Text="{Binding Specificant}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Label Content="학생정보" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,121,0,0" Width="204"
+               HorizontalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="#FF787878" />
+        <Label Content="출석체크" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="204,121,0,0" Width="80"
+               BorderBrush="#FF787878" BorderThickness="1,1,0,0" HorizontalContentAlignment="Center" />
+        <Label Content="외출" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="284,121,0,0" Width="239"
+               BorderBrush="#FF787878" BorderThickness="1,1,0,0" HorizontalContentAlignment="Center" />
+        <Label Content="학원" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="523,121,0,0" Width="837"
+               BorderBrush="#FF787878" HorizontalContentAlignment="Center" BorderThickness="1,1,1,0" />
+    </Grid>
+</Window>

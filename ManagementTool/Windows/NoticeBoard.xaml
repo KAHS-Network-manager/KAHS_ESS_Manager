@@ -1,0 +1,42 @@
+﻿<Window x:Class="ManagementTool.Windows.NoticeBoard"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="게시판" Height="600" Width="700" ResizeMode="NoResize" Closed="Window_Closed">
+    <Grid>
+        <ListView x:Name="LvMesssages" HorizontalAlignment="Left" Width="350" Margin="5,78,0,5"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  SelectionChanged="LvMesssages_SelectionChanged">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="날짜" Width="133">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Tag="Date" Text="{Binding Date}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="제목" Width="210">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Tag="Title" Text="{Binding Title}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Label Content="제목" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="360,78,0,0" />
+        <Label Content="본문" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="360,142,0,0" />
+        <Button Content="글쓰기" Margin="526,10,25,514" Click="Button_Click" />
+        <Label x:Name="NoticeTitle" Content="" Margin="360,109,5,0" BorderBrush="Black" BorderThickness="1" Height="28"
+               VerticalAlignment="Top" />
+        <Border BorderThickness="1,1,1,1" BorderBrush="Black" Margin="360,168,5,5">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                <TextBlock x:Name="NoticeContent" TextWrapping="Wrap" Margin="-1" Padding="5" />
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</Window>
