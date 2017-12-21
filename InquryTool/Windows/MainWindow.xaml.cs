@@ -12,18 +12,15 @@ using Application = System.Windows.Application;
 
 namespace InquryTool.Windows
 {
-    /// <summary>
-    ///     MainWindow.xaml에 대한 상호 작용 논리
-    /// </summary>
     public partial class MainWindow
     {
-        private NoticeBoard _nb;
+        private NoticeBoard _noticeBoard;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            _nb = new NoticeBoard(out bool complete);
+            _noticeBoard = new NoticeBoard(out var complete);
             if (!complete)
             {
                 Close();
@@ -86,11 +83,7 @@ namespace InquryTool.Windows
             #endregion
         }
 
-        /// <summary>
-        ///     파일로 저장버튼입니다.
-        ///     버튼을 누르면 Excel 프로그램을 Invisiable 한 상태로 열고
-        ///     값을 입력한 후에 Desktop\작화조회파일 폴더에 저장합니다.
-        /// </summary>
+        // 파일로 저장 버튼
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             if (!(LvAnihome.HasItems || LvPrep.HasItems || LvOuting.HasItems || LvAcademy.HasItems))
@@ -274,18 +267,18 @@ namespace InquryTool.Windows
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            if (_nb.IsLoaded && !_nb.IsActive)
+            if (_noticeBoard.IsLoaded && !_noticeBoard.IsActive)
             {
-                _nb.Activate();
+                _noticeBoard.Activate();
             }
             else
             {
                 // If NoticeBoard Closed
-                _nb = new NoticeBoard(out bool complete);
+                _noticeBoard = new NoticeBoard(out var complete);
 
                 if (complete)
                 {
-                    _nb.Show();
+                    _noticeBoard.Show();
                 }
                 else
                 {
@@ -296,10 +289,10 @@ namespace InquryTool.Windows
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            if (_nb.IsLoaded)
+            if (_noticeBoard.IsLoaded)
             {
-                _nb.Close();
-                _nb = null;
+                _noticeBoard.Close();
+                _noticeBoard = null;
             }
             if (Database.IsConnectionOpen)
             {

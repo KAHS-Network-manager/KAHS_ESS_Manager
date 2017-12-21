@@ -8,18 +8,17 @@ using Common.Data;
 
 namespace InquryTool.Windows
 {
-    /// <summary>
-    ///     NoticeBoard.xaml에 대한 상호 작용 논리
-    /// </summary>
     public partial class NoticeBoard
     {
-        private WriteBoard _wb;
+        private WriteBoard _writeBoard;
+
+        private bool _shouldRun;
 
         public NoticeBoard(out bool complete)
         {
             InitializeComponent();
 
-            _wb = new WriteBoard();
+            _writeBoard = new WriteBoard();
 
             #region Excute Query
 
@@ -44,7 +43,7 @@ namespace InquryTool.Windows
                 Close();
             }
             complete = true;
-            ShouldRun = true;
+            _shouldRun = true;
 
             #endregion
 
@@ -52,7 +51,7 @@ namespace InquryTool.Windows
 
             new Thread(() =>
             {
-                while (ShouldRun)
+                while (_shouldRun)
                 {
                     using (var adapter = Database.GetAdapter(sql))
                     using (var datas = new DataSet())
@@ -80,8 +79,6 @@ namespace InquryTool.Windows
             #endregion
         }
 
-        private bool ShouldRun { get; set; }
-
         private void LvMesssages_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (LvMesssages.SelectedIndex < 0)
@@ -89,9 +86,7 @@ namespace InquryTool.Windows
                 return;
             }
 
-            var msg = LvMesssages.SelectedItem as Message;
-
-            if (msg == null)
+            if (!(LvMesssages.SelectedItem is Message msg))
             {
                 return;
             }
@@ -104,14 +99,14 @@ namespace InquryTool.Windows
         {
             while (true)
             {
-                if (_wb.IsLoaded && _wb.IsActive)
+                if (_writeBoard.IsLoaded && _writeBoard.IsActive)
                 {
-                    _wb.Activate();
+                    _writeBoard.Activate();
                 }
                 else
                 {
-                    _wb = new WriteBoard();
-                    _wb.Show();
+                    _writeBoard = new WriteBoard();
+                    _writeBoard.Show();
                     continue;
                 }
                 break;
@@ -120,14 +115,14 @@ namespace InquryTool.Windows
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            ShouldRun = false;
+            _shouldRun = false;
 
-            if (_wb.IsLoaded)
+            if (_writeBoard.IsLoaded)
             {
-                _wb.Close();
+                _writeBoard.Close();
             }
 
-            _wb = null;
+            _writeBoard = null;
         }
     }
 }

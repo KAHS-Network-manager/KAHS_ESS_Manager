@@ -9,3 +9,10 @@ D:\Document\_CODE\WPF\_학교 작화 프로젝트\(Final)작화프로그램\Comm
 D:\Document\_CODE\WPF\_학교 작화 프로젝트\(Final)작화프로그램\Common\obj\Debug\Common.csproj.CoreCompileInputs.cache
 D:\Document\_CODE\WPF\_학교 작화 프로젝트\(Final)작화프로그램\Common\obj\Debug\Common.dll
 D:\Document\_CODE\WPF\_학교 작화 프로젝트\(Final)작화프로그램\Common\obj\Debug\Common.pdb
+D:\Document\GitHub\KAHS_ESS_Manager\dll\Common.dll.config
+D:\Document\GitHub\KAHS_ESS_Manager\dll\Common.dll
+D:\Document\GitHub\KAHS_ESS_Manager\dll\Common.pdb
+D:\Document\GitHub\KAHS_ESS_Manager\Common\obj\Debug\Common.csprojResolveAssemblyReference.cache
+D:\Document\GitHub\KAHS_ESS_Manager\Common\obj\Debug\Common.csproj.CoreCompileInputs.cache
+D:\Document\GitHub\KAHS_ESS_Manager\Common\obj\Debug\Common.dll
+D:\Document\GitHub\KAHS_ESS_Manager\Common\obj\Debug\Common.pdb
