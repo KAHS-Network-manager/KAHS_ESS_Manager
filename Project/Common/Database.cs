@@ -52,7 +52,7 @@ namespace Common
                    "FROM Student S " +
                    "INNER JOIN ESS E, Outing O, Academy A " +
                    $"WHERE S.Number = E.Number AND S.Number = O.Number AND S.Number = A.Number AND S.Grade = '{gd}'"
-                   + (cs.Equals("전체") ? ";" : $"AND S.Class={cs}");
+                   + (cs.Equals("전체") ? ";" : $"AND S.Class={cs};");
         }
 
         public static MySqlDataAdapter GetAdapter(string sql)
