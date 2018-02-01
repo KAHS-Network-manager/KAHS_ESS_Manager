@@ -24,7 +24,7 @@ namespace ManagementTool.Windows
             // 게시글을 가져오는 쿼리
             #region Excute Query
 
-            const string sql = "SELECT * FROM Messages ORDER BY WroteDate DESC";
+            const string sql = "SELECT * FROM Message ORDER BY WroteDate DESC";
             try
             {
                 using (var adapter = Database.GetAdapter(sql))
@@ -108,7 +108,7 @@ namespace ManagementTool.Windows
             _writeBoard = null;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void OpenWriteBoard(object sender, RoutedEventArgs e)
         {
             while (true)
             {

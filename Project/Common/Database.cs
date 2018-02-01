@@ -7,12 +7,10 @@ namespace Common
 {
     public static class Database
     {
-        private const string ConnectionInfo = "Server = 127.0.0.1; Database=MainDB; Uid=xklest; Pwd=zxc123;";
+        private const string ConnectionInfo = "";
         private static MySqlConnection _dbConnection;
 
         public static bool IsConnectionOpen { get; private set; }
-        private static string _prevGrade;
-        private static string _prevClass;
 
         public static void Disconnect()
         {
@@ -49,17 +47,12 @@ namespace Common
             {
                 throw new Exception("반을 제대로 선택 해 주십시오.");
             }
-            if (_prevGrade.Equals(gd) && _prevClass.Equals(cs))
-            {
-                return string.Empty;
-            }
 
-            _prevGrade = gd;
-            _prevClass = cs;
-
-            return cs.Equals("전체")
-                ? $"SELECT * FROM Students Std INNER JOIN AfterSchoolActivityStatus Act, AcademyInfo Acd WHERE Std.Number=Act.Number AND Std.Number=Acd.Number AND Std.Grade='{gd}';"
-                : $"SELECT * FROM Students Std INNER JOIN AfterSchoolActivityStatus Act, AcademyInfo Acd WHERE Std.Number=Act.Number AND Std.Number=Acd.Number AND Std.Grade='{gd}' AND Std.Class='{cs}';";
+            return "SELECT * " +
+                   "FROM Student S " +
+                   "INNER JOIN ESS E, Outing O, Academy A " +
+                   $"WHERE S.Number = E.Number AND S.Number = O.Number AND S.Number = A.Number AND S.Grade = '{gd}'"
+                   + (cs.Equals("전체") ? ";" : $"AND S.Class={cs}");
         }
 
         public static MySqlDataAdapter GetAdapter(string sql)

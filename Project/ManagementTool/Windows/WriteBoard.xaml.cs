@@ -11,7 +11,7 @@ namespace ManagementTool.Windows
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Submit(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(TbWriteTitle.Text) || string.IsNullOrEmpty(TbWriteContent.Text))
             {
@@ -19,7 +19,7 @@ namespace ManagementTool.Windows
             }
 
             var sql =
-                $"INSERT INTO Messages(`Title`, `Content`) values('{TbWriteTitle.Text}', '{TbWriteContent.Text}');";
+                $"INSERT INTO Message(`Title`, `Content`) values('{TbWriteTitle.Text}', '{TbWriteContent.Text}');";
             try
             {
                 using (var cmd = Database.GetCommand(sql))

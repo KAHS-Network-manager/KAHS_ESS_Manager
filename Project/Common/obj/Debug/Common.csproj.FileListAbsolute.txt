@@ -16,3 +16,10 @@ D:\Document\GitHub\KAHS_ESS_Manager\Common\obj\Debug\Common.csprojResolveAssembl
 D:\Document\GitHub\KAHS_ESS_Manager\Common\obj\Debug\Common.csproj.CoreCompileInputs.cache
 D:\Document\GitHub\KAHS_ESS_Manager\Common\obj\Debug\Common.dll
 D:\Document\GitHub\KAHS_ESS_Manager\Common\obj\Debug\Common.pdb
+D:\Document\GitHub\KAHS_ESS_Manager\Project\dll\Common.dll.config
+D:\Document\GitHub\KAHS_ESS_Manager\Project\dll\Common.dll
+D:\Document\GitHub\KAHS_ESS_Manager\Project\dll\Common.pdb
+D:\Document\GitHub\KAHS_ESS_Manager\Project\Common\obj\Debug\Common.csprojResolveAssemblyReference.cache
+D:\Document\GitHub\KAHS_ESS_Manager\Project\Common\obj\Debug\Common.csproj.CoreCompileInputs.cache
+D:\Document\GitHub\KAHS_ESS_Manager\Project\Common\obj\Debug\Common.dll
+D:\Document\GitHub\KAHS_ESS_Manager\Project\Common\obj\Debug\Common.pdb

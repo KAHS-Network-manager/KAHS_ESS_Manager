@@ -22,7 +22,7 @@ namespace InquryTool.Windows
 
             #region Excute Query
 
-            const string sql = "SELECT * FROM Messages ORDER BY WroteDate DESC";
+            const string sql = "SELECT * FROM Message ORDER BY WroteDate DESC";
 
             try
             {
@@ -32,7 +32,7 @@ namespace InquryTool.Windows
                     adapter.Fill(datas);
                     foreach (DataRow data in datas.Tables[0].Rows)
                     {
-                        LvMesssages.Items.Add(new Message(data));
+                        LvMesssage.Items.Add(new Message(data));
                     }
                 }
             }
@@ -58,17 +58,17 @@ namespace InquryTool.Windows
                     {
                         adapter.Fill(datas);
 
-                        LvMesssages.Dispatcher.Invoke(() =>
+                        LvMesssage.Dispatcher.Invoke(() =>
                         {
-                            if (datas.Tables[0].Rows.Count == LvMesssages.Items.Count)
+                            if (datas.Tables[0].Rows.Count == LvMesssage.Items.Count)
                             {
                                 return;
                             }
 
-                            LvMesssages.Items.Clear();
+                            LvMesssage.Items.Clear();
                             foreach (DataRow data in datas.Tables[0].Rows)
                             {
-                                LvMesssages.Items.Add(new Message(data));
+                                LvMesssage.Items.Add(new Message(data));
                             }
                         });
                     }
@@ -81,12 +81,12 @@ namespace InquryTool.Windows
 
         private void LvMesssages_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (LvMesssages.SelectedIndex < 0)
+            if (LvMesssage.SelectedIndex < 0)
             {
                 return;
             }
 
-            if (!(LvMesssages.SelectedItem is Message msg))
+            if (!(LvMesssage.SelectedItem is Message msg))
             {
                 return;
             }
@@ -95,7 +95,7 @@ namespace InquryTool.Windows
             NoticeContent.Text = msg.Content;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void OpenWriteBoard(object sender, RoutedEventArgs e)
         {
             while (true)
             {

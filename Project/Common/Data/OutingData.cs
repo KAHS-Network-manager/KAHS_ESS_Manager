@@ -2,15 +2,15 @@
 
 namespace Common.Data
 {
-    public class OutingData : BasicData
+    public class OutingData : DormitoryData
     {
         public OutingData(DataRow data) : base(data)
         {
-            OutingStartTime = data["OutingStartTime"].ToString();
-            OutingReturnTime = data["OutingReturnTime"].ToString();
+            StartTime = data["O.StartTime"].ToString();
+            EndTime = data["O.EndTime"].ToString();
         }
 
-        public string OutingStartTime { get; }
-        public string OutingReturnTime { get; }
+        public string StartTime { get; }
+        public string EndTime { get; }
     }
 }

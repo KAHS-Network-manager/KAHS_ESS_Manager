@@ -8,8 +8,19 @@ using Common;
 
 namespace DataInsertTool
 {
+    struct StudentData
+    {
+        public string Name;
+        public string Number;
+        public string RoomNumber;
+        public string Grade;
+        public string Class;
+    }
+
     public class Program
     {
+       
+
         private const int Hide = 0;
         private const int Show = 5;
 
@@ -55,12 +66,7 @@ namespace DataInsertTool
                 break;
             }
 
-            var studentsData = new List<string>[5];
-
-            for (var i = 0; i < 5; ++i)
-            {
-                studentsData[i] = new List<string>();
-            }
+            var studentsData = new List<StudentData>();
 
             var excel = new Excel(Environment.CurrentDirectory, fileName, sheetName);
 
@@ -68,18 +74,21 @@ namespace DataInsertTool
             {
                 return;
             }
-
             for (int g = 0, m = 2; g < 3; ++g, ++m)
             for (var c = 1; (excel.Worksheet.Cells[3, m] as Range)?.Value != null; m += 2, ++c)
             for (var n = 3; (excel.Worksheet.Cells[n, m] as Range)?.Value != null; ++n)
             {
                 if (((Range) excel.Worksheet.Cells[n, m + 1]).Value is null)
                     continue;
-                studentsData[0].Add(((g + 1) * 1000 + c * 100 + (n - 2)).ToString());
-                studentsData[1].Add(((Range) excel.Worksheet.Cells[n, m]).Value.ToString());
-                studentsData[2].Add((g + 1).ToString());
-                studentsData[3].Add(c.ToString());
-                studentsData[4].Add(((Range) excel.Worksheet.Cells[n, m + 1])?.Value.ToString());
+
+                studentsData.Add(new StudentData
+                {
+                    Number = ((g + 1) * 1000 + c * 100 + (n - 2)).ToString(),
+                    Name = ((Range) excel.Worksheet.Cells[n, m]).Value.ToString(),
+                    Grade = (g + 1).ToString(),
+                    Class = c.ToString(),
+                    RoomNumber = ((Range) excel.Worksheet.Cells[n, m + 1])?.Value.ToString()
+                });
             }
 
             excel.Release();
@@ -89,19 +98,20 @@ namespace DataInsertTool
             try
             {
                 Database.Connect();
-                for (var i = 0; i < studentsData[0].Count; ++i)
+                for (var i = 0; i < studentsData.Count; ++i)
                 {
-                    rate += (double) 1 / studentsData[0].Count * 100;
+                    rate += (double) 1 / studentsData.Count;
                     if (rate >= 1d)
                     {
                         progressbar.PerformStep();
-                        rate = 0d;
+                        rate -= 1d;
                     }
 
                     var sql =
-                        $"INSERT INTO Students(`Number`,`Name`,`Grade`,`Class`,`RoomNumber`) values({studentsData[0][i]},'{studentsData[1][i]}',{studentsData[2][i]},{studentsData[3][i]},{studentsData[4][i]});" +
-                        $"INSERT INTO AfterSchoolActivityStatus(`Number`) values({studentsData[0][i]});" +
-                        $"INSERT INTO AcademyInfo(`Number`) values({studentsData[0][i]});";
+                        $"INSERT INTO Student(`Number`,`Name`,`Grade`,`Class`,`RoomNumber`) values({studentsData[i].Number},'{studentsData[i].Name}',{studentsData[i].Grade},{studentsData[i].Class},{studentsData[i].RoomNumber});" +
+                        $"INSERT INTO ESS(`Number`) values({studentsData[i].Number});" +
+                        $"INSERT INTO Outing(`Number`) values({studentsData[i].Number});" +
+                        $"INSERT INTO Academy(`Number`) values({studentsData[i].Number});";
                     using (var cmd = Database.GetCommand(sql))
                     {
                         cmd.ExecuteNonQuery();

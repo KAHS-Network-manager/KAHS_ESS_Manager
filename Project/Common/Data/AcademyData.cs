@@ -2,15 +2,15 @@
 
 namespace Common.Data
 {
-    public class AcademyData : BasicData
+    public class AcademyData : DormitoryData
     {
         public AcademyData(DataRow data) : base(data)
         {
-            AcademyStartTime = data["AcademyStartTime"].ToString();
-            AcademyEndTime = data["AcademyEndTime"].ToString();
+            StartTime = data["A.StartTime"].ToString();
+            EndTime = data["A.EndTime"].ToString();
         }
 
-        public string AcademyStartTime { get; set; }
-        public string AcademyEndTime { get; set; }
+        public string StartTime { get; set; }
+        public string EndTime { get; set; }
     }
 }

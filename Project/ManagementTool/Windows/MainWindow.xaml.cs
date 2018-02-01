@@ -34,7 +34,7 @@ namespace ManagementTool.Windows
             _prevStdudentDatas = new List<StudentData>();
         }
 
-        private void BtInqury_Click(object sender, RoutedEventArgs e)
+        private void Inqury(object sender, RoutedEventArgs e)
         {
             if (CbClass.SelectedIndex < 0 || CbGrade.SelectedIndex < 0)
             {
@@ -82,7 +82,7 @@ namespace ManagementTool.Windows
             _prevStdudentDatas.Clear();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void OpenNoticeBoard(object sender, RoutedEventArgs e)
         {
             // If NoticeBoard is Shown and is not activated
             if (_noticeBoard.IsLoaded && !_noticeBoard.IsActive)
@@ -148,8 +148,8 @@ namespace ManagementTool.Windows
                 MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK);
             }
 
-            MessageBox.Show("수정완료!");
-            Bt_Inqury_Click(null, null);
+            MessageBox.Show("수정 완료!");
+            Inqury(null, null);
 
             #endregion
         }

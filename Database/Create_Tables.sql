@@ -35,9 +35,19 @@ CREATE TABLE Outing (
 CREATE TABLE Student (
     Number char(4) NOT NULL,
     Name varchar(5) NOT NULL,
+    RoomNumber char(3) NOT NULL,
     Grade char(1) NOT NULL,
     Class char(1) NOT NULL,
     CONSTRAINT Student_pk PRIMARY KEY (Number)
+);
+
+-- Table: Message
+CREATE TABLE Message (
+   `Index` int NOT NULL,
+   Title varchar(20) NULL,
+   Content varchar(100) NULL,
+   Date date NULL DEFAULT NOW(),
+   CONSTRAINT Message_pk PRIMARY KEY (`Index`)
 );
 
 -- End of file.

@@ -31,12 +31,16 @@ namespace InquryTool.Windows
         {
             if (Database.Connect().Equals(false))
             {
-                MessageBox.Show("MysqlConnection variable has an error", "ERROR");
+                MessageBox.Show("Failed to connect to database.", "ERROR");
                 Close();
             }
 
             const string sql =
-                "SELECT * FROM Students Std INNER JOIN AfterSchoolActivityStatus Act, AcademyInfo Acd WHERE Std.Number=Act.Number AND Std.Number=Acd.Number ORDER BY RoomNumber ASC, Std.Name ASC;";
+                "SELECT * " +
+                "FROM Student S " +
+                "INNER JOIN ESS E, Outing O, Academy A " +
+                "WHERE S.Number = E.Number AND S.Number = O.Number AND S.Number = A.Number " +
+                "ORDER BY S.RoomNumber ASC, S.Name ASC;";
 
             #region 쿼리 실행
 
@@ -48,19 +52,19 @@ namespace InquryTool.Windows
                     adapter.Fill(set);
                     foreach (DataRow data in set.Tables[0].Rows)
                     {
-                        if (data["Prep"].Equals("Y"))
+                        if (data["E.Ess"].Equals("Y"))
                         {
-                            LvPrep.Items.Add(new BasicData(data));
+                            LvEss.Items.Add(new DormitoryData(data));
                         }
-                        else if (data["prep"].Equals("N"))
+                        else if (data["E.Dormitory"].Equals("Y"))
                         {
-                            LvAnihome.Items.Add(new BasicData(data));
+                            LvDormitory.Items.Add(new DormitoryData(data));
                         }
-                        else if (data["Outing"].Equals("Y"))
+                        else if (data["O.Whether"].Equals("Y"))
                         {
                             LvOuting.Items.Add(new OutingData(data));
                         }
-                        else if (data["Academy"].Equals("Y"))
+                        else if (data["A.Whether"].Equals("Y"))
                         {
                             if (data[DateTime.Today.ToString("dddd", new CultureInfo("en-US"))].Equals("Y"))
                             {
@@ -69,7 +73,7 @@ namespace InquryTool.Windows
                         }
                         else
                         {
-                            LvUnchecked.Items.Add(new BasicData(data));
+                            LvUnchecked.Items.Add(new DormitoryData(data));
                         }
                     }
                 }
@@ -84,9 +88,9 @@ namespace InquryTool.Windows
         }
 
         // 파일로 저장 버튼
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ExportToFile(object sender, RoutedEventArgs e)
         {
-            if (!(LvAnihome.HasItems || LvPrep.HasItems || LvOuting.HasItems || LvAcademy.HasItems))
+            if (!(LvDormitory.HasItems || LvEss.HasItems || LvOuting.HasItems || LvAcademy.HasItems))
             {
                 return;
             }
@@ -145,9 +149,9 @@ namespace InquryTool.Windows
 
             #region 기숙사 데이터 입력
 
-            for (var i = 0; i < LvAnihome.Items.Count; ++i)
+            for (var i = 0; i < LvDormitory.Items.Count; ++i)
             {
-                if (!(LvAnihome.Items[i] is BasicData tmp))
+                if (!(LvDormitory.Items[i] is DormitoryData tmp))
                 {
                     continue;
                 }
@@ -156,16 +160,16 @@ namespace InquryTool.Windows
                 excel.Worksheet.Cells[4 + i, 2] = tmp.Name;
             }
             r = excel.Worksheet.Range[excel.Worksheet.Cells[4, 1],
-                excel.Worksheet.Cells[4 + LvAnihome.Items.Count - 1, 2]];
+                excel.Worksheet.Cells[4 + LvDormitory.Items.Count - 1, 2]];
             r.HorizontalAlignment = XlHAlign.xlHAlignCenter;
 
             #endregion
 
             #region 작화실 데이터 입력
 
-            for (var i = 0; i < LvPrep.Items.Count; ++i)
+            for (var i = 0; i < LvEss.Items.Count; ++i)
             {
-                if (!(LvPrep.Items[i] is BasicData tmp))
+                if (!(LvEss.Items[i] is DormitoryData tmp))
                 {
                     continue;
                 }
@@ -174,7 +178,7 @@ namespace InquryTool.Windows
                 excel.Worksheet.Cells[4 + i, 5] = tmp.Name;
             }
             r = excel.Worksheet.Range[excel.Worksheet.Cells[4, 4],
-                excel.Worksheet.Cells[4 + LvPrep.Items.Count - 1, 5]];
+                excel.Worksheet.Cells[4 + LvEss.Items.Count - 1, 5]];
             r.HorizontalAlignment = XlHAlign.xlHAlignCenter;
 
             #endregion
@@ -190,8 +194,8 @@ namespace InquryTool.Windows
 
                 excel.Worksheet.Cells[4 + i, 7] = tmp.RoomNumber;
                 excel.Worksheet.Cells[4 + i, 8] = tmp.Name;
-                excel.Worksheet.Cells[4 + i, 9] = tmp.OutingStartTime;
-                excel.Worksheet.Cells[4 + i, 10] = tmp.OutingReturnTime;
+                excel.Worksheet.Cells[4 + i, 9] = tmp.StartTime;
+                excel.Worksheet.Cells[4 + i, 10] = tmp.EndTime;
             }
             r = excel.Worksheet.Range[excel.Worksheet.Cells[4, 7],
                 excel.Worksheet.Cells[4 + LvOuting.Items.Count - 1, 10]];
@@ -210,8 +214,8 @@ namespace InquryTool.Windows
 
                 excel.Worksheet.Cells[4 + i, 12] = tmp.RoomNumber;
                 excel.Worksheet.Cells[4 + i, 13] = tmp.Name;
-                excel.Worksheet.Cells[4 + i, 14] = tmp.AcademyStartTime;
-                excel.Worksheet.Cells[4 + i, 15] = tmp.AcademyEndTime;
+                excel.Worksheet.Cells[4 + i, 14] = tmp.StartTime;
+                excel.Worksheet.Cells[4 + i, 15] = tmp.EndTime;
             }
             r = excel.Worksheet.Range[excel.Worksheet.Cells[4, 12],
                 excel.Worksheet.Cells[4 + LvAcademy.Items.Count - 1, 15]];
@@ -223,7 +227,7 @@ namespace InquryTool.Windows
 
             for (var i = 0; i < LvUnchecked.Items.Count; ++i)
             {
-                if (!(LvUnchecked.Items[i] is BasicData tmp))
+                if (!(LvUnchecked.Items[i] is DormitoryData tmp))
                 {
                     continue;
                 }
@@ -247,12 +251,12 @@ namespace InquryTool.Windows
 
         private void LvAnihome_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            LvAnihome.SelectedIndex = -1;
+            LvDormitory.SelectedIndex = -1;
         }
 
-        private void LvPrep_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void LvEss_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            LvPrep.SelectedIndex = -1;
+            LvEss.SelectedIndex = -1;
         }
 
         private void LvOuting_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -265,7 +269,7 @@ namespace InquryTool.Windows
             LvAcademy.SelectedIndex = -1;
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void OpenNoticeBoard(object sender, RoutedEventArgs e)
         {
             if (_noticeBoard.IsLoaded && !_noticeBoard.IsActive)
             {

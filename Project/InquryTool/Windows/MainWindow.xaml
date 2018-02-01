@@ -16,7 +16,7 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <ListView x:Name="LvAnihome" HorizontalAlignment="Left" Height="619" VerticalAlignment="Top" Width="186"
+        <ListView x:Name="LvDormitory" HorizontalAlignment="Left" Height="619" VerticalAlignment="Top" Width="186"
                   Margin="0,150,0,0" ScrollViewer.VerticalScrollBarVisibility="Disabled"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionChanged="LvAnihome_SelectionChanged">
             <ListView.View>
@@ -38,9 +38,9 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <ListView x:Name="LvPrep" HorizontalAlignment="Left" Height="619" VerticalAlignment="Top" Width="186"
+        <ListView x:Name="LvEss" HorizontalAlignment="Left" Height="619" VerticalAlignment="Top" Width="186"
                   Margin="186,150,0,0" ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionChanged="LvPrep_SelectionChanged">
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionChanged="LvEss_SelectionChanged">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="호실" Width="90">
@@ -132,25 +132,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Label Content="기숙사" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,123,0,0" Width="186"
-               BorderBrush="#FF787878" Padding="5" HorizontalContentAlignment="Center"
-               VerticalContentAlignment="Center" BorderThickness="1,1,1,0" />
-        <Label Content="작화실" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="186,123,0,0" Width="186"
-               BorderBrush="#FF787878" BorderThickness="1,1,1,0" VerticalContentAlignment="Center"
-               HorizontalContentAlignment="Center" />
-        <Label Content="외출" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="372,123,0,0"
-               BorderThickness="1,1,1,0" BorderBrush="#FF787878" Width="310" ScrollViewer.CanContentScroll="True"
-               HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
-        <Label Content="학원" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="682,123,0,0" Width="312"
-               BorderThickness="1,1,1,0" BorderBrush="#FF787878" HorizontalContentAlignment="Center"
-               VerticalContentAlignment="Center" />
-        <Button Content="파일로 저장하기" VerticalAlignment="Top" Margin="994,40,33,0" Height="41" Click="Button_Click" />
-        <CheckBox x:Name="CbOpenFolder" Content="저장 후 폴더열기" VerticalAlignment="Top" Margin="994,86,33,0"
-                  HorizontalContentAlignment="Center" />
-        <Button Content="게시판" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="774,40,0,0"
-                Height="41" Click="Button_Click_1" />
-        <Label Content="불출석 명단" VerticalAlignment="Top" Margin="994,123,1,0" BorderBrush="#FF787878"
-               BorderThickness="1,1,1,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
         <ListView x:Name="LvUnchecked" Margin="994,150,1,0" ScrollViewer.VerticalScrollBarVisibility="Disabled"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListView.View>
@@ -172,5 +153,24 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <Label Content="기숙사" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,123,0,0" Width="186"
+               BorderBrush="#FF787878" Padding="5" HorizontalContentAlignment="Center"
+               VerticalContentAlignment="Center" BorderThickness="1,1,1,0" />
+        <Label Content="작화실" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="186,123,0,0" Width="186"
+               BorderBrush="#FF787878" BorderThickness="1,1,1,0" VerticalContentAlignment="Center"
+               HorizontalContentAlignment="Center" />
+        <Label Content="외출" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="372,123,0,0"
+               BorderThickness="1,1,1,0" BorderBrush="#FF787878" Width="310" ScrollViewer.CanContentScroll="True"
+               HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        <Label Content="학원" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="682,123,0,0" Width="312"
+               BorderThickness="1,1,1,0" BorderBrush="#FF787878" HorizontalContentAlignment="Center"
+               VerticalContentAlignment="Center" />
+        <Label Content="불출석 명단" VerticalAlignment="Top" Margin="994,123,1,0" BorderBrush="#FF787878"
+               BorderThickness="1,1,1,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+        <Button Content="게시판" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="774,40,0,0"
+                Height="41" Click="OpenNoticeBoard" />
+        <Button Content="파일로 저장하기" VerticalAlignment="Top" Margin="994,40,33,0" Height="41" Click="ExportToFile" />
+        <CheckBox x:Name="CbOpenFolder" Content="저장 후 폴더열기" VerticalAlignment="Top" Margin="994,86,33,0"
+                  HorizontalContentAlignment="Center" />
     </Grid>
 </Window>

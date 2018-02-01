@@ -30,37 +30,42 @@ namespace Common.Data
         {
             _data = data;
 
-            Name = _data["Name"].ToString();
-            Number = _data["Number"].ToString();
+            Name = _data["S.Name"].ToString();
+            Number = _data["S.Number"].ToString();
 
-            Prep = _data["Prep"].Equals("Y");
-            Outing = _data["Outing"].Equals("Y");
-            OutingAuthorization = _data["OutingAuthorization"].Equals("Y");
-            OutingStartTime = GetIndexFromTime(_data["OutingStartTime"].ToString());
-            OutingReturnTime = GetIndexFromTime(_data["OutingReturnTime"].ToString());
 
-            Academy = _data["Academy"].Equals("Y");
-            Monday = _data["Monday"].ToString();
-            Tuesday = _data["Tuesday"].ToString();
-            Wednesday = _data["Wednesday"].ToString();
-            Thursday = _data["Thursday"].ToString();
-            Friday = _data["Friday"].ToString();
-            AcademyStartTime = GetIndexFromTime(_data["AcademyStartTime"].ToString());
-            AcademyEndTime = GetIndexFromTime(_data["AcademyEndTime"].ToString());
-            Specificant = _data["Specificant"].ToString();
+            EssStatus = _data["E.Ess"].Equals("Y")
+                ? 0
+                : _data["E.Dormitory"].Equals("Y")
+                    ? 1
+                    : _data["O.Whether"].Equals("Y")
+                        ? 2
+                        : _data["A.Whether"].Equals("Y")
+                            ? 3
+                            : 4;
+            OutingStartTime = GetIndexFromTime(_data["E.StartTime"].ToString());
+            OutingReturnTime = GetIndexFromTime(_data["E.EndTime"].ToString());
+
+            Monday = _data["A.Monday"].ToString();
+            Tuesday = _data["A.Tuesday"].ToString();
+            Wednesday = _data["A.Wednesday"].ToString();
+            Thursday = _data["A.Thursday"].ToString();
+            Friday = _data["A.Friday"].ToString();
+            AcademyStartTime = GetIndexFromTime(_data["A.StartTime"].ToString());
+            AcademyEndTime = GetIndexFromTime(_data["A.EndTime"].ToString());
+            Remarks = _data["A.Remarks"].ToString();
         }
         // 데이터
         private readonly DataRow _data;
 
-        // 개인정보
+        // 개인 정보
         public string Name { get; set; }
         public string Number { get; set; }
 
         // 작화
-        public bool Prep { get; set; }
+        public int EssStatus { get; set; }
 
         // 외출
-        public bool Outing { get; set; }
         public bool OutingAuthorization { get; set; }
         public int OutingStartTime { get; set; }
         public int OutingReturnTime { get; set; }
@@ -74,46 +79,55 @@ namespace Common.Data
         public string Friday { get; set; }
         public int AcademyStartTime { get; set; }
         public int AcademyEndTime { get; set; }
-        public string Specificant { get; set; }
+        public string Remarks { get; set; }
 
         public string Sql
         {
             get
             {
-                var sql = $"UPDATE AfterSchoolActivityStatus SET Prep='{(Prep ? "Y" : "N")}' WHERE Number={Number};";
+                var sql = "UPDATE ESS SET " +
+                          $"Ess={(EssStatus == 0 ? "Y" : "N")}, Dormitory={(EssStatus == 1 ? "Y" : "N")} " +
+                          $"WHERE Number = {Number}";
 
-                if (Outing)
+                if (EssStatus == 2)
                 {
                     if (!OutingAuthorization)
-                        throw new Exception($"외출허가 버튼이 체크되어있지 않습니다.;{Name}");
+                        throw new Exception($"외출 허가 버튼이 체크 되지 않았습니다;{Name}");
                     if (OutingStartTime < 0 || OutingReturnTime < 0)
-                        throw new Exception($"외출시간을 제대로 설정해주세요;{Name}");
+                        throw new Exception($"외출 시간을 제대로 설정해 주세요;{Name}");
                     if (OutingStartTime >= OutingReturnTime)
-                        throw new Exception($"외출시간을 제대로 설정해주세요;{Name}");
+                        throw new Exception($"외출 시간을 제대로 설정해 주세요;{Name}");
                     sql +=
-                        $"UPDATE AfterSchoolActivityStatus SET Outing='Y', OutingAuthorization='Y', OutingStartTime='{GetTimeFromIndex(OutingStartTime)}', OutingReturnTime='{GetTimeFromIndex(OutingReturnTime)}' WHERE Number={Number};";
+                        "UPDATE Outing SET " +
+                        $"Whether='Y', StartTime='{GetTimeFromIndex(OutingStartTime)}', EndTime='{GetTimeFromIndex(OutingReturnTime)}' " +
+                        $"WHERE Number={Number};";
                 }
                 else
                 {
                     sql +=
-                        $"UPDATE AfterSchoolActivityStatus SET Outing='N', OutingAuthorization='N', OutingStartTime=NULL, OutingReturnTime=NULL WHERE Number={Number};";
+                        "UPDATE ESS SET " +
+                        "Outing='N', OutingAuthorization='N', OutingStartTime=NULL, OutingReturnTime=NULL " +
+                        $"WHERE Number={Number};";
                 }
 
-                if (Academy)
+                if (EssStatus == 3)
                 {
                     if (AcademyStartTime < 0 || AcademyEndTime < 0)
-                        throw new Exception($"학원시간을 제대로 설정해주세요;{Name}");
+                        throw new Exception($"학원 시간을 제대로 설정해 주세요;{Name}");
                     if (AcademyStartTime >= AcademyEndTime)
-                        throw new Exception($"학원시간을 제대로 설정해주세요;{Name}");
+                        throw new Exception($"학원 시간을 제대로 설정해 주세요;{Name}");
                     sql +=
-                        $"UPDATE AfterSchoolActivityStatus SET Academy='Y' WHERE Number={Number}; " +
-                        $"UPDATE AcademyInfo SET Monday='{Monday}', Tuesday='{Tuesday}', Wednesday='{Wednesday}', Thursday='{Thursday}', Friday='{Friday}', AcademyStartTime='{GetTimeFromIndex(AcademyStartTime)}', AcademyEndTime='{GetTimeFromIndex(AcademyEndTime)}', Specificant='{Specificant}' WHERE Number={Number};";
+                        "UPDATE Academy SET " +
+                        $"Whether='Y' Monday='{Monday}', Tuesday='{Tuesday}', Wednesday='{Wednesday}', Thursday='{Thursday}', Friday='{Friday}', " +
+                        $"StartTime='{GetTimeFromIndex(AcademyStartTime)}', EndTime='{GetTimeFromIndex(AcademyEndTime)}', Remarks='{Remarks}' " +
+                        $"WHERE Number={Number};";
                 }
                 else
                 {
                     sql +=
-                        $"UPDATE AfterSchoolActivityStatus SET Academy='N' WHERE Number={Number}; " +
-                        $"UPDATE AcademyInfo SET Monday='N', Tuesday='N', Wednesday='N', Thursday='N', Friday='N', AcademyStartTime=NULL, AcademyEndTime=NULL, Specificant=NULL WHERE Number={Number};";
+                        "UPDATE Academy SET " +
+                        "Whether='N', Monday='N', Tuesday='N', Wednesday='N', Thursday='N', Friday='N', AcademyStartTime=NULL, AcademyEndTime=NULL, Remarks=NULL " +
+                        $"WHERE Number={Number};";
                 }
 
                 return sql;

@@ -7,10 +7,9 @@
         Title="WriteBoard" Height="800" Width="500" ResizeMode="NoResize">
     <Grid>
         <Label Content="제목" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" />
-        <TextBox x:Name="TbWriteTitle" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Margin="10,36,10,0" />
         <Label Content="본문" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,64,0,0" />
+        <TextBox x:Name="TbWriteTitle" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Margin="10,36,10,0" />
         <TextBox x:Name="TbWriteContent" Height="616" TextWrapping="Wrap" VerticalAlignment="Top" Margin="10,95,10,0" />
-        <Button Content="전송" Margin="344,716,10,10" Click="Button_Click" />
-
+        <Button Content="전송" Margin="344,716,10,10" Click="Submit" />
     </Grid>
 </Window>
