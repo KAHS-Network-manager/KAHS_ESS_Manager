@@ -7,7 +7,6 @@ using System.Windows;
 using System.Windows.Controls;
 using Common;
 using Common.Data;
-using MySql.Data.MySqlClient;
 
 namespace ManagementTool.Windows
 {
@@ -26,15 +25,11 @@ namespace ManagementTool.Windows
                 Close();
             }
 
-            _noticeBoard = new NoticeBoard(out var complete);
-            if (!complete)
-            {
-                Close();
-            }
+            OpenNoticeBoard(null, null);
             _prevStdudentDatas = new List<StudentData>();
         }
 
-        private void Inqury(object sender, RoutedEventArgs e)
+        private void GetData(object sender, RoutedEventArgs e)
         {
             if (CbClass.SelectedIndex < 0 || CbGrade.SelectedIndex < 0)
             {
@@ -54,7 +49,6 @@ namespace ManagementTool.Windows
                 {
                     dataAdapter.Fill(datas);
 
-                    // 리스트뷰에 데이터가 있을 경우 초기화
                     ClearListView();
 
                     foreach (DataRow data in datas.Tables[0].Rows)
@@ -84,14 +78,20 @@ namespace ManagementTool.Windows
 
         private void OpenNoticeBoard(object sender, RoutedEventArgs e)
         {
-            // If NoticeBoard is Shown and is not activated
             if (_noticeBoard.IsLoaded && !_noticeBoard.IsActive)
             {
+                // 게시판 창이 이미 실행 되어 있을 경우
+                //
+                // 창을 새로 만들지 않고 맨 위로 올림
+
                 _noticeBoard.Activate();
             }
             else
             {
-                // If NoticeBoard Closed
+                // 게시판 창이 열려 있지 않을 경우
+                //
+                // 창을 새로 만듬
+
                 _noticeBoard = new NoticeBoard(out var complete);
 
                 if (complete)
@@ -105,7 +105,7 @@ namespace ManagementTool.Windows
             }
         }
 
-        private void BtDone_Click(object sender, RoutedEventArgs e)
+        private void Inqury(object sender, RoutedEventArgs e)
         {
             if (LvStudentData.HasItems.Equals(false))
             {
@@ -149,7 +149,7 @@ namespace ManagementTool.Windows
             }
 
             MessageBox.Show("수정 완료!");
-            Inqury(null, null);
+            GetData(null, null);
 
             #endregion
         }
@@ -157,23 +157,20 @@ namespace ManagementTool.Windows
         private static string[] ParseExceptionMessage(string message)
         {
             int idx;
-            var sb1 = new StringBuilder();
+            StringBuilder[] sb = { new StringBuilder(), new StringBuilder() };
             for (idx = 0; message[idx] != ';' || idx < message.Length; ++idx)
             {
-                sb1.Append(message[idx]);
+                sb[0].Append(message[idx]);
             }
-            var sb2 = new StringBuilder();
             for (idx += 1; idx < message.Length; ++idx)
             {
-                sb2.Append(message[idx]);
+                sb[1].Append(message[idx]);
             }
-
-            return new[] {sb1.ToString(), sb2.ToString()};
+            return new[] { sb[0].ToString(), sb[1].ToString() };
         }
 
         private void LvStudentData_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // User Cannot Select Item  
             LvStudentData.SelectedIndex = -1;
         }
 

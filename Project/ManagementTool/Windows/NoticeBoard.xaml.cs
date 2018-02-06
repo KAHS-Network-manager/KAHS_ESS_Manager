@@ -12,19 +12,19 @@ namespace ManagementTool.Windows
     {
         private WriteBoard _writeBoard;
 
-        private bool _shouldRun;
+        private volatile bool _shouldRun;
 
         public NoticeBoard(out bool complete)
         {
             InitializeComponent();
 
-            _writeBoard = new WriteBoard();
-
-
             // 게시글을 가져오는 쿼리
             #region Excute Query
 
-            const string sql = "SELECT * FROM Message ORDER BY WroteDate DESC";
+            const string sql = 
+                "SELECT * " +
+                "FROM Message " +
+                "ORDER BY WroteDate DESC";
             try
             {
                 using (var adapter = Database.GetAdapter(sql))
@@ -33,7 +33,7 @@ namespace ManagementTool.Windows
                     adapter.Fill(datas);
                     foreach (DataRow data in datas.Tables[0].Rows)
                     {
-                        LvMesssages.Items.Add(new Message(data));
+                        LvMessage.Items.Add(new Message(data));
                     }
                 }
             }
@@ -57,21 +57,24 @@ namespace ManagementTool.Windows
                 while (_shouldRun)
                 {
                     // 추가한 스레드 에서는 WPF 컴포넌트의 스레드를 거쳐서 WPF 변수의 값을 바꿀 수 있음
-                    LvMesssages.Dispatcher.Invoke(() =>
+                    
+                    using (var adapter = Database.GetAdapter(sql))
+                    using (var datas = new DataSet())
                     {
-                        using (var adapter = Database.GetAdapter(sql))
-                        using (var datas = new DataSet())
+                        adapter.Fill(datas);
+
+                        LvMessage.Dispatcher.Invoke(() =>
                         {
-                            adapter.Fill(datas);
-                            if (datas.Tables[0].Rows.Count == LvMesssages.Items.Count) return;
-                            LvMesssages.Items.Clear();
+                            if (datas.Tables[0].Rows.Count == LvMessage.Items.Count) return;
+                            if (!IsActive) Activate();
+
+                            LvMessage.Items.Clear();
                             foreach (DataRow data in datas.Tables[0].Rows)
                             {
-                                LvMesssages.Items.Add(new Message(data));
+                                LvMessage.Items.Add(new Message(data));
                             }
-
-                        }
-                    });
+                        });
+                    }
                     Thread.Sleep(1000);
                 }
             }).Start();
@@ -81,12 +84,12 @@ namespace ManagementTool.Windows
 
         private void LvMesssages_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (LvMesssages.SelectedIndex < 0)
+            if (LvMessage.SelectedIndex < 0)
             {
                 return;
             }
 
-            var msg = LvMesssages.SelectedItem as Message;
+            var msg = LvMessage.SelectedItem as Message;
             if (msg is null)
             {
                 return;

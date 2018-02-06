@@ -18,8 +18,10 @@ namespace ManagementTool.Windows
                 return;
             }
 
+            // 데이터 입력
             var sql =
-                $"INSERT INTO Message(`Title`, `Content`) values('{TbWriteTitle.Text}', '{TbWriteContent.Text}');";
+                "INSERT INTO Message(`Title`, `Content`) " +
+                $"VALUES('{TbWriteTitle.Text}', '{TbWriteContent.Text}');";
             try
             {
                 using (var cmd = Database.GetCommand(sql))

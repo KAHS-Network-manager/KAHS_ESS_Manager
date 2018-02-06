@@ -4,9 +4,6 @@ using Common;
 
 namespace InquryTool.Windows
 {
-    /// <summary>
-    ///     WriteBoard.xaml에 대한 상호 작용 논리
-    /// </summary>
     public partial class WriteBoard
     {
         public WriteBoard()
@@ -21,8 +18,11 @@ namespace InquryTool.Windows
                 return;
             }
 
+            // 데이터 입력
             var sql =
-                $"INSERT INTO Message(`Title`, `Content`) values('{TbWriteTitle.Text}', '{TbWriteContent.Text}');";
+                "INSERT INTO Message(`Title`, `Content`) " +
+                $"VALUES('{TbWriteTitle.Text}', '{TbWriteContent.Text}');";
+
             try
             {
                 using (var cmd = Database.GetCommand(sql))

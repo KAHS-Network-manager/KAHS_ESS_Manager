@@ -12,17 +12,19 @@ namespace InquryTool.Windows
     {
         private WriteBoard _writeBoard;
 
-        private bool _shouldRun;
+        private volatile bool _shouldRun;
 
         public NoticeBoard(out bool complete)
         {
             InitializeComponent();
 
-            _writeBoard = new WriteBoard();
-
             #region Excute Query
 
-            const string sql = "SELECT * FROM Message ORDER BY WroteDate DESC";
+            // 게시판 전체 조회 - 최근순
+            const string sql = 
+                "SELECT * " +
+                "FROM Message " +
+                "ORDER BY WroteDate DESC";
 
             try
             {
@@ -32,7 +34,7 @@ namespace InquryTool.Windows
                     adapter.Fill(datas);
                     foreach (DataRow data in datas.Tables[0].Rows)
                     {
-                        LvMesssage.Items.Add(new Message(data));
+                        LvMessage.Items.Add(new Message(data));
                     }
                 }
             }
@@ -58,17 +60,15 @@ namespace InquryTool.Windows
                     {
                         adapter.Fill(datas);
 
-                        LvMesssage.Dispatcher.Invoke(() =>
+                        LvMessage.Dispatcher.Invoke(() =>
                         {
-                            if (datas.Tables[0].Rows.Count == LvMesssage.Items.Count)
-                            {
-                                return;
-                            }
+                            if (datas.Tables[0].Rows.Count == LvMessage.Items.Count) return;
+                            if (!IsActive) Activate();
 
-                            LvMesssage.Items.Clear();
+                            LvMessage.Items.Clear();
                             foreach (DataRow data in datas.Tables[0].Rows)
                             {
-                                LvMesssage.Items.Add(new Message(data));
+                                LvMessage.Items.Add(new Message(data));
                             }
                         });
                     }
@@ -81,12 +81,12 @@ namespace InquryTool.Windows
 
         private void LvMesssages_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (LvMesssage.SelectedIndex < 0)
+            if (LvMessage.SelectedIndex < 0)
             {
                 return;
             }
 
-            if (!(LvMesssage.SelectedItem is Message msg))
+            if (!(LvMessage.SelectedItem is Message msg))
             {
                 return;
             }

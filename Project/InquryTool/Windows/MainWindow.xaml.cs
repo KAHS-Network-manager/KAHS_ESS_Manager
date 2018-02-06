@@ -20,11 +20,7 @@ namespace InquryTool.Windows
         {
             InitializeComponent();
 
-            _noticeBoard = new NoticeBoard(out var complete);
-            if (!complete)
-            {
-                Close();
-            }
+            OpenNoticeBoard(null, null);
         }
 
         private void Window_Initialized(object sender, EventArgs e)
@@ -35,6 +31,7 @@ namespace InquryTool.Windows
                 Close();
             }
 
+            // 전체 데이터 조회 - 호실, 이름순
             const string sql =
                 "SELECT * " +
                 "FROM Student S " +
@@ -52,25 +49,31 @@ namespace InquryTool.Windows
                     adapter.Fill(set);
                     foreach (DataRow data in set.Tables[0].Rows)
                     {
+                        // 작화실
                         if (data["E.Ess"].Equals("Y"))
                         {
                             LvEss.Items.Add(new DormitoryData(data));
                         }
+                        // 기숙사
                         else if (data["E.Dormitory"].Equals("Y"))
                         {
                             LvDormitory.Items.Add(new DormitoryData(data));
                         }
+                        // 외출
                         else if (data["O.Whether"].Equals("Y"))
                         {
                             LvOuting.Items.Add(new OutingData(data));
                         }
+                        // 학원
                         else if (data["A.Whether"].Equals("Y"))
                         {
+                            // 오늘에 해당하는 학생들만 조회
                             if (data[DateTime.Today.ToString("dddd", new CultureInfo("en-US"))].Equals("Y"))
                             {
                                 LvAcademy.Items.Add(new AcademyData(data));
                             }
                         }
+                        // 미출석
                         else
                         {
                             LvUnchecked.Items.Add(new DormitoryData(data));
@@ -273,11 +276,17 @@ namespace InquryTool.Windows
         {
             if (_noticeBoard.IsLoaded && !_noticeBoard.IsActive)
             {
+                // 게시판 창이 이미 실행 되어 있을 경우
+                //
+                // 창을 새로 만들지 않고 맨 위로 올림
                 _noticeBoard.Activate();
             }
             else
             {
-                // If NoticeBoard Closed
+                // 게시판 창이 열려 있지 않을 경우
+                //
+                // 창을 새로 만듬
+
                 _noticeBoard = new NoticeBoard(out var complete);
 
                 if (complete)

@@ -50,13 +50,13 @@
             <ComboBoxItem Content="4" HorizontalAlignment="Left" Width="77" HorizontalContentAlignment="Center"
                           VerticalContentAlignment="Center" />
         </ComboBox>
-        <Button x:Name="BtInqury" Content="조회" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75"
-                Margin="798,50,0,0" RenderTransformOrigin="0.653,0.262" Height="30" Click="Inqury"
+        <Button Content="조회" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75"
+                Margin="798,50,0,0" RenderTransformOrigin="0.653,0.262" Height="30" Click="GetData"
                 TabIndex="2" />
         <Button Content="게시판" HorizontalAlignment="Left" VerticalAlignment="Top" Width="88" Margin="980,50,0,0"
                 Height="30" Click="OpenNoticeBoard" TabIndex="3" />
-        <Button x:Name="BtDone" Content="완료" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"
-                Margin="1175,50,0,0" Height="30" Click="BtDone_Click" />
+        <Button Content="완료" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"
+                Margin="1175,50,0,0" Height="30" Click="Inqury" />
         <ListView x:Name="LvStudentData" HorizontalAlignment="Left" Height="720" VerticalAlignment="Top"
                   HorizontalContentAlignment="Center" Width="1360" Margin="0,148,0,0"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"

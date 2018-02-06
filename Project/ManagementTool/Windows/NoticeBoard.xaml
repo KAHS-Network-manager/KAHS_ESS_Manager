@@ -6,7 +6,7 @@
         mc:Ignorable="d"
         Title="게시판" Height="600" Width="700" ResizeMode="NoResize" Closed="Window_Closed">
     <Grid>
-        <ListView x:Name="LvMesssages" HorizontalAlignment="Left" Width="350" Margin="5,78,0,5"
+        <ListView x:Name="LvMessage" HorizontalAlignment="Left" Width="350" Margin="5,78,0,5"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto"
                   SelectionChanged="LvMesssages_SelectionChanged">
             <ListView.View>
