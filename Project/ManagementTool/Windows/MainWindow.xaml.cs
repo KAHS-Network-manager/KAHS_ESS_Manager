@@ -20,7 +20,7 @@ namespace ManagementTool.Windows
         {
             InitializeComponent();
 
-            if (!Database.Connect(""))
+            if (!Database.Connect())
             {
                 Close();
             }

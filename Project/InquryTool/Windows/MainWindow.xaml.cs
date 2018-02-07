@@ -25,7 +25,7 @@ namespace InquryTool.Windows
 
         private void Window_Initialized(object sender, EventArgs e)
         {
-            if (Database.Connect("").Equals(false))
+            if (Database.Connect().Equals(false))
             {
                 MessageBox.Show("Failed to connect to database.", "ERROR");
                 Close();
