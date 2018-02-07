@@ -24,7 +24,7 @@ namespace Common
         public Excel(string dirPath, string fileName, string sheetName)
         {
             _excelApp = new MsExcel.Application { Visible = false};
-            _workbook = _excelApp.Workbooks.Open($"{DirPath}\\{FileName}");
+            _workbook = _excelApp.Workbooks.Open($"{dirPath}\\{fileName}");
 
             if (sheetName == null)
                 Worksheet = _workbook.ActiveSheet;

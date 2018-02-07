@@ -7,7 +7,6 @@ namespace Common
 {
     public static class Database
     {
-        private const string ConnectionInfo = "";
         private static MySqlConnection _dbConnection;
 
         public static bool IsConnectionOpen { get; private set; }
@@ -18,11 +17,11 @@ namespace Common
             IsConnectionOpen = false;
         }
 
-        public static bool Connect()
+        public static bool Connect(string connectionInfo)
         {
             try
             {
-                _dbConnection = new MySqlConnection(ConnectionInfo);
+                _dbConnection = new MySqlConnection(connectionInfo);
                 _dbConnection.Open();
                 IsConnectionOpen = true;
             }
