@@ -19,8 +19,6 @@ namespace DataInsertTool
 
     public class Program
     {
-       
-
         private const int Hide = 0;
         private const int Show = 5;
 
@@ -97,14 +95,14 @@ namespace DataInsertTool
             var rate = 0d;
             try
             {
-                Database.Connect();
+                Database.Connect("");
                 for (var i = 0; i < studentsData.Count; ++i)
                 {
                     rate += (double) 1 / studentsData.Count;
-                    if (rate >= 1d)
+                    if (rate >= 0.01d)
                     {
                         progressbar.PerformStep();
-                        rate -= 1d;
+                        rate -= 0.01d;
                     }
 
                     var sql =
