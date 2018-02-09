@@ -24,7 +24,7 @@ namespace InquryTool.Windows
             const string sql = 
                 "SELECT * " +
                 "FROM Message " +
-                "ORDER BY WroteDate DESC";
+                "ORDER BY Date DESC";
 
             try
             {
@@ -99,15 +99,15 @@ namespace InquryTool.Windows
         {
             while (true)
             {
-                if (_writeBoard.IsLoaded && _writeBoard.IsActive)
-                {
-                    _writeBoard.Activate();
-                }
-                else
+                if (_writeBoard is null || !_writeBoard.IsLoaded)
                 {
                     _writeBoard = new WriteBoard();
                     _writeBoard.Show();
                     continue;
+                }
+                if(_writeBoard.IsLoaded && !_writeBoard.IsActive)
+                {
+                    _writeBoard.Activate();
                 }
                 break;
             }
@@ -117,7 +117,7 @@ namespace InquryTool.Windows
         {
             _shouldRun = false;
 
-            if (_writeBoard.IsLoaded)
+            if (_writeBoard != null && _writeBoard.IsLoaded)
             {
                 _writeBoard.Close();
             }

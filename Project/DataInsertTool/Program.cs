@@ -106,10 +106,8 @@ namespace DataInsertTool
                     }
 
                     var sql =
-                        $"INSERT INTO Student(`Number`,`Name`,`Grade`,`Class`,`RoomNumber`) values({studentsData[i].Number},'{studentsData[i].Name}',{studentsData[i].Grade},{studentsData[i].Class},{studentsData[i].RoomNumber});" +
-                        $"INSERT INTO ESS(`Number`) values({studentsData[i].Number});" +
-                        $"INSERT INTO Outing(`Number`) values({studentsData[i].Number});" +
-                        $"INSERT INTO Academy(`Number`) values({studentsData[i].Number});";
+                        "INSERT INTO Student(`Number`,`Name`,`Grade`,`Class`,`RoomNumber`) " +
+                        $"values({studentsData[i].Number},'{studentsData[i].Name}',{studentsData[i].Grade},{studentsData[i].Class},{studentsData[i].RoomNumber});";
                     using (var cmd = Database.GetCommand(sql))
                     {
                         cmd.ExecuteNonQuery();

@@ -6,8 +6,8 @@ namespace Common.Data
     {
         public AcademyData(DataRow data) : base(data)
         {
-            StartTime = data["A.StartTime"].ToString();
-            EndTime = data["A.EndTime"].ToString();
+            StartTime = data["AcademyStart"].ToString();
+            EndTime = data["AcademyEnd"].ToString();
         }
 
         public string StartTime { get; set; }

@@ -1,6 +1,7 @@
 ﻿ using System;
 using System.Collections.Generic;
 using System.Data;
+ using System.Globalization;
  using System.Linq;
 
 namespace Common.Data
@@ -28,35 +29,31 @@ namespace Common.Data
 
         public StudentData(DataRow data)
         {
-            _data = data;
-
-            Name = _data["S.Name"].ToString();
-            Number = _data["S.Number"].ToString();
+            Name = data["Name"].ToString();
+            Number = data["Number"].ToString();
 
 
-            EssStatus = _data["E.Ess"].Equals("Y")
-                ? 0
-                : _data["E.Dormitory"].Equals("Y")
-                    ? 1
-                    : _data["O.Whether"].Equals("Y")
-                        ? 2
-                        : _data["A.Whether"].Equals("Y")
-                            ? 3
+            EssStatus = data[DateTime.Today.ToString("dddd", new CultureInfo("en-US"))].Equals("Y")
+                ? 3
+                : data["Outing"].Equals("Y")
+                    ? 2
+                    : data["Dormitory"].Equals("Y")
+                        ? 1
+                        : data["Ess"].Equals("Y")
+                            ? 0
                             : 4;
-            OutingStartTime = GetIndexFromTime(_data["E.StartTime"].ToString());
-            OutingReturnTime = GetIndexFromTime(_data["E.EndTime"].ToString());
+            OutingStartTime = GetIndexFromTime(data["OutingStart"].ToString());
+            OutingEndTime = GetIndexFromTime(data["OutingEnd"].ToString());
 
-            Monday = _data["A.Monday"].ToString();
-            Tuesday = _data["A.Tuesday"].ToString();
-            Wednesday = _data["A.Wednesday"].ToString();
-            Thursday = _data["A.Thursday"].ToString();
-            Friday = _data["A.Friday"].ToString();
-            AcademyStartTime = GetIndexFromTime(_data["A.StartTime"].ToString());
-            AcademyEndTime = GetIndexFromTime(_data["A.EndTime"].ToString());
-            Remarks = _data["A.Remarks"].ToString();
+            Monday = data["Monday"].Equals("Y");
+            Tuesday = data["Tuesday"].Equals("Y");
+            Wednesday = data["Wednesday"].Equals("Y");
+            Thursday = data["Thursday"].Equals("Y");
+            Friday = data["Friday"].Equals("Y");
+            AcademyStartTime = GetIndexFromTime(data["AcademyStart"].ToString());
+            AcademyEndTime = GetIndexFromTime(data["AcademyEnd"].ToString());
+            Remarks = data["Remarks"].ToString();
         }
-        // 데이터
-        private readonly DataRow _data;
 
         // 개인 정보
         public string Name { get; set; }
@@ -66,17 +63,16 @@ namespace Common.Data
         public int EssStatus { get; set; }
 
         // 외출
-        public bool OutingAuthorization { get; set; }
         public int OutingStartTime { get; set; }
-        public int OutingReturnTime { get; set; }
+        public int OutingEndTime { get; set; }
 
         // 학원
         public bool Academy { get; set; }
-        public string Monday { get; set; }
-        public string Tuesday { get; set; }
-        public string Wednesday { get; set; }
-        public string Thursday { get; set; }
-        public string Friday { get; set; }
+        public bool Monday { get; set; }
+        public bool Tuesday { get; set; }
+        public bool Wednesday { get; set; }
+        public bool Thursday { get; set; }
+        public bool Friday { get; set; }
         public int AcademyStartTime { get; set; }
         public int AcademyEndTime { get; set; }
         public string Remarks { get; set; }
@@ -85,50 +81,51 @@ namespace Common.Data
         {
             get
             {
-                var sql = "UPDATE ESS SET " +
-                          $"Ess={(EssStatus == 0 ? "Y" : "N")}, Dormitory={(EssStatus == 1 ? "Y" : "N")} " +
-                          $"WHERE Number = {Number}";
+                var sql = "UPDATE Student SET ";
 
-                if (EssStatus == 2)
+                if (Monday || Tuesday || Wednesday || Thursday || Friday)
                 {
-                    if (!OutingAuthorization)
-                        throw new Exception($"외출 허가 버튼이 체크 되지 않았습니다;{Name}");
-                    if (OutingStartTime < 0 || OutingReturnTime < 0)
-                        throw new Exception($"외출 시간을 제대로 설정해 주세요;{Name}");
-                    if (OutingStartTime >= OutingReturnTime)
-                        throw new Exception($"외출 시간을 제대로 설정해 주세요;{Name}");
-                    sql +=
-                        "UPDATE Outing SET " +
-                        $"Whether='Y', StartTime='{GetTimeFromIndex(OutingStartTime)}', EndTime='{GetTimeFromIndex(OutingReturnTime)}' " +
-                        $"WHERE Number={Number};";
-                }
-                else
-                {
-                    sql +=
-                        "UPDATE ESS SET " +
-                        "Outing='N', OutingAuthorization='N', OutingStartTime=NULL, OutingReturnTime=NULL " +
-                        $"WHERE Number={Number};";
-                }
-
-                if (EssStatus == 3)
-                {
-                    if (AcademyStartTime < 0 || AcademyEndTime < 0)
-                        throw new Exception($"학원 시간을 제대로 설정해 주세요;{Name}");
                     if (AcademyStartTime >= AcademyEndTime)
                         throw new Exception($"학원 시간을 제대로 설정해 주세요;{Name}");
+                    if (AcademyStartTime < 0 && AcademyEndTime < 0)
+                        throw new Exception($"학원 시간을 제대로 설정해 주세요;{Name}");
+
                     sql +=
-                        "UPDATE Academy SET " +
-                        $"Whether='Y' Monday='{Monday}', Tuesday='{Tuesday}', Wednesday='{Wednesday}', Thursday='{Thursday}', Friday='{Friday}', " +
-                        $"StartTime='{GetTimeFromIndex(AcademyStartTime)}', EndTime='{GetTimeFromIndex(AcademyEndTime)}', Remarks='{Remarks}' " +
-                        $"WHERE Number={Number};";
+                            $"AcademyStart='{GetTimeFromIndex(AcademyStartTime)}',AcademyEnd='{GetTimeFromIndex(AcademyEndTime)}'," +
+                            $"Monday='{(Monday ? "Y" : "N")}',Tuesday='{(Tuesday ? "Y" : "N")}',Wednesday='{(Wednesday ? "Y" : "N")}',Thursday='{(Thursday ? "Y" : "N")}',Friday='{(Friday ? "Y" : "N")}',Remarks='{Remarks}',";
+
+                    var today = DateTime.Today.ToString("dddd", new CultureInfo("en-US"));
+                    if (sql[sql.IndexOf(today, StringComparison.Ordinal) + today.Length + 2] == 'Y')
+                        EssStatus = 3;
                 }
                 else
                 {
-                    sql +=
-                        "UPDATE Academy SET " +
-                        "Whether='N', Monday='N', Tuesday='N', Wednesday='N', Thursday='N', Friday='N', AcademyStartTime=NULL, AcademyEndTime=NULL, Remarks=NULL " +
-                        $"WHERE Number={Number};";
+                    sql += "AcademyStart=NULL, AcademyEnd=NULL," +
+                    "Monday=\'N\',Tuesday=\'N\',Wednesday=\'N\',Thursday=\'N\',Friday=\'N\',Remarks=NULL,";
                 }
+
+                sql += $"Ess='{(EssStatus == 0 ? "Y" : "N")}'," +
+                       $"Dormitory='{(EssStatus == 1 ? "Y" : "N")}'," +
+                       $"Outing='{(EssStatus == 2 ? "Y" : "N")}',";
+
+                switch (EssStatus)
+                {
+                    case 0:
+                    case 1:
+                    case 3:
+                    case 4:
+                        sql += "OutingStart=NULL, OutingEnd=NULL ";
+                        break;
+                    case 2:
+                        if (OutingStartTime < 0 || OutingEndTime < 0)
+                            throw new Exception($"외출 시간을 제대로 설정해 주세요;{Name}");
+                        if (OutingStartTime >= OutingEndTime)
+                            throw new Exception($"외출 시간을 제대로 설정해 주세요;{Name}");
+                        sql +=
+                            $"OutingStart='{GetTimeFromIndex(OutingStartTime)}',OutingEnd='{GetTimeFromIndex(OutingEndTime)}' ";
+                        break;
+                }
+                sql += $"WHERE Number='{Number}';";
 
                 return sql;
             }
@@ -136,7 +133,7 @@ namespace Common.Data
 
         private static int GetIndexFromTime(string time)
         {
-            return Times.FindIndex(current => current.Equals(time));
+            return Times.IndexOf(time);
         }
 
         private static string GetTimeFromIndex(int index)
@@ -146,7 +143,7 @@ namespace Common.Data
 
         public bool Equals(StudentData other)
         {
-            return other != null && other._data.ItemArray.Cast<KeyValuePair<string, string>>().All(col => _data[col.Key].Equals(col.Value));
+            return other != null && (Name == other.Name && Number == other.Number) && EssStatus == other.EssStatus && OutingStartTime == other.OutingStartTime && OutingEndTime == other.OutingEndTime && Academy == other.Academy && Monday == other.Monday && Tuesday == other.Tuesday && Wednesday == other.Wednesday && Thursday == other.Thursday && Friday == other.Friday && AcademyStartTime == other.AcademyEndTime && AcademyEndTime == other.AcademyEndTime && Remarks == other.Remarks;
         }
     }
 }

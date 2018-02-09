@@ -6,7 +6,7 @@ namespace Common.Data
     {
         public Message(DataRow data)
         {
-            Date = data["WroteDate"].ToString();
+            Date = data["Date"].ToString();
             Title = data["Title"].ToString();
             Content = data["Content"].ToString();
         }

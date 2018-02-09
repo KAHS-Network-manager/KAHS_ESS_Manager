@@ -6,8 +6,8 @@ namespace Common.Data
     {
         public DormitoryData(DataRow data)
         {
-            RoomNumber = data["S.RoomNumber"].ToString();
-            Name = data["S.Name"].ToString();
+            RoomNumber = data["RoomNumber"].ToString();
+            Name = data["Name"].ToString();
         }
 
         public string RoomNumber { get; set; }

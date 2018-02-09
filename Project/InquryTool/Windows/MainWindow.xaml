@@ -82,14 +82,14 @@
                     <GridViewColumn Header="외출시간" Width="76">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding OutingStartTime}" />
+                                <TextBlock Text="{Binding StartTime}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     <GridViewColumn Header="복귀시간" Width="76">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding OutingReturnTime}" />
+                                <TextBlock Text="{Binding EndTime}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -118,14 +118,14 @@
                     <GridViewColumn Header="학원시간" Width="76">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding AcademyStartTime}" />
+                                <TextBlock Text="{Binding StartTime}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     <GridViewColumn Header="복귀시간" Width="76">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding AcademyEndTime}" />
+                                <TextBlock Text="{Binding EndTime}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

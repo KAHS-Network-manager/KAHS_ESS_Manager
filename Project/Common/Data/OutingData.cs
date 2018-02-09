@@ -6,8 +6,8 @@ namespace Common.Data
     {
         public OutingData(DataRow data) : base(data)
         {
-            StartTime = data["O.StartTime"].ToString();
-            EndTime = data["O.EndTime"].ToString();
+            StartTime = data["OutingStart"].ToString();
+            EndTime = data["OutingEnd"].ToString();
         }
 
         public string StartTime { get; }

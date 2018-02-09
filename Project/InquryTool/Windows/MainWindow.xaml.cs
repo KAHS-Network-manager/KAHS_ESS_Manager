@@ -25,7 +25,7 @@ namespace InquryTool.Windows
 
         private void Window_Initialized(object sender, EventArgs e)
         {
-            if (Database.Connect("").Equals(false))
+            if (!Database.Connect(""))
             {
                 MessageBox.Show("Failed to connect to database.", "ERROR");
                 Close();
@@ -34,10 +34,8 @@ namespace InquryTool.Windows
             // 전체 데이터 조회 - 호실, 이름순
             const string sql =
                 "SELECT * " +
-                "FROM Student S " +
-                "INNER JOIN ESS E, Outing O, Academy A " +
-                "WHERE S.Number = E.Number AND S.Number = O.Number AND S.Number = A.Number " +
-                "ORDER BY S.RoomNumber ASC, S.Name ASC;";
+                "FROM Student " +
+                "ORDER BY RoomNumber ASC, Name ASC;";
 
             #region 쿼리 실행
 
@@ -50,28 +48,24 @@ namespace InquryTool.Windows
                     foreach (DataRow data in set.Tables[0].Rows)
                     {
                         // 작화실
-                        if (data["E.Ess"].Equals("Y"))
+                        if (data["Ess"].Equals("Y"))
                         {
                             LvEss.Items.Add(new DormitoryData(data));
                         }
                         // 기숙사
-                        else if (data["E.Dormitory"].Equals("Y"))
+                        else if (data["Dormitory"].Equals("Y"))
                         {
                             LvDormitory.Items.Add(new DormitoryData(data));
                         }
                         // 외출
-                        else if (data["O.Whether"].Equals("Y"))
+                        else if (data["Outing"].Equals("Y"))
                         {
                             LvOuting.Items.Add(new OutingData(data));
                         }
                         // 학원
-                        else if (data["A.Whether"].Equals("Y"))
+                        else if (data[DateTime.Today.ToString("dddd", new CultureInfo("en-US"))].Equals("Y"))
                         {
-                            // 오늘에 해당하는 학생들만 조회
-                            if (data[DateTime.Today.ToString("dddd", new CultureInfo("en-US"))].Equals("Y"))
-                            {
-                                LvAcademy.Items.Add(new AcademyData(data));
-                            }
+                            LvAcademy.Items.Add(new AcademyData(data));
                         }
                         // 미출석
                         else
@@ -274,14 +268,7 @@ namespace InquryTool.Windows
 
         private void OpenNoticeBoard(object sender, RoutedEventArgs e)
         {
-            if (_noticeBoard.IsLoaded && !_noticeBoard.IsActive)
-            {
-                // 게시판 창이 이미 실행 되어 있을 경우
-                //
-                // 창을 새로 만들지 않고 맨 위로 올림
-                _noticeBoard.Activate();
-            }
-            else
+            if (_noticeBoard is null || !_noticeBoard.IsLoaded)
             {
                 // 게시판 창이 열려 있지 않을 경우
                 //
@@ -297,6 +284,13 @@ namespace InquryTool.Windows
                 {
                     Close();
                 }
+            }
+            else if(_noticeBoard.IsLoaded && !_noticeBoard.IsActive)
+            {
+                // 게시판 창이 이미 실행 되어 있을 경우
+                //
+                // 창을 새로 만들지 않고 맨 위로 올림
+                _noticeBoard.Activate();
             }
         }
 

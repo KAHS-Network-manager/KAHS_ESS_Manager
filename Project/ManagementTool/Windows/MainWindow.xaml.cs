@@ -78,15 +78,7 @@ namespace ManagementTool.Windows
 
         private void OpenNoticeBoard(object sender, RoutedEventArgs e)
         {
-            if (_noticeBoard.IsLoaded && !_noticeBoard.IsActive)
-            {
-                // 게시판 창이 이미 실행 되어 있을 경우
-                //
-                // 창을 새로 만들지 않고 맨 위로 올림
-
-                _noticeBoard.Activate();
-            }
-            else
+            if (_noticeBoard is null || !_noticeBoard.IsLoaded)
             {
                 // 게시판 창이 열려 있지 않을 경우
                 //
@@ -102,6 +94,14 @@ namespace ManagementTool.Windows
                 {
                     Close();
                 }
+            }
+            else if(_noticeBoard.IsLoaded && !_noticeBoard.IsActive)
+            {
+                // 게시판 창이 이미 실행 되어 있을 경우
+                //
+                // 창을 새로 만들지 않고 맨 위로 올림
+
+                _noticeBoard.Activate();
             }
         }
 
@@ -158,7 +158,7 @@ namespace ManagementTool.Windows
         {
             int idx;
             StringBuilder[] sb = { new StringBuilder(), new StringBuilder() };
-            for (idx = 0; message[idx] != ';' || idx < message.Length; ++idx)
+            for (idx = 0; idx < message.Length && message[idx] != ';'; ++idx)
             {
                 sb[0].Append(message[idx]);
             }

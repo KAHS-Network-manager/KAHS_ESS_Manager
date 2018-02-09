@@ -22,9 +22,9 @@
                Width="49" VerticalContentAlignment="Center" />
         <Label Content="학생정보" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,121,0,0" Width="204"
                HorizontalContentAlignment="Center" BorderThickness="1,1,0,0" BorderBrush="#FF787878" />
-        <Label Content="출석체크" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="204,121,0,0" Width="80"
+        <Label Content="출석체크" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="204,121,0,0" Width="120"
                BorderBrush="#FF787878" BorderThickness="1,1,0,0" HorizontalContentAlignment="Center" />
-        <Label Content="외출" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="284,121,0,0" Width="239"
+        <Label Content="외출" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="324,121,0,0" Width="199"
                BorderBrush="#FF787878" BorderThickness="1,1,0,0" HorizontalContentAlignment="Center" />
         <Label Content="학원" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="523,121,0,0" Width="837"
                BorderBrush="#FF787878" HorizontalContentAlignment="Center" BorderThickness="1,1,1,0" />
@@ -77,30 +77,45 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="출석 체크" Width="80">
+                    <GridViewColumn Header="출석 체크" Width="120">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <ComboBox Tag="EssStatus" Width="60" SelectedIndex="{Binding EssStatus}">
-                                    <ComboBoxItem Content="작화실" HorizontalAlignment="Center" Width="57"/>
-                                    <ComboBoxItem Content="기숙사" HorizontalAlignment="Center" Width="57"/>
-                                    <ComboBoxItem Content="외출" HorizontalAlignment="Center" Width="57"/>
-                                    <ComboBoxItem Content="학원" HorizontalAlignment="Center" Width="57"/>
-                                    <ComboBoxItem Content="출석 안함" HorizontalAlignment="Center" Width="57"/>
+                                <ComboBox Tag="EssStatus" Width="100" SelectedIndex="{Binding EssStatus}">
+                                    <ComboBoxItem Content="작화실" HorizontalAlignment="Center" Width="97"/>
+                                    <ComboBoxItem Content="기숙사" HorizontalAlignment="Center" Width="97"/>
+                                    <ComboBoxItem Content="외출" HorizontalAlignment="Center" Width="97"/>
+                                    <ComboBoxItem Content="학원" HorizontalAlignment="Center" Width="97"/>
+                                    <ComboBoxItem Content="출석 안함" HorizontalAlignment="Center" Width="97"/>
                                 </ComboBox>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="외출 허가" Width="60">
+                    <GridViewColumn Header="외출 시작 시간" Width="100">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <CheckBox Tag="OutingAuthorization" IsChecked="{Binding OutingAuthorization}" />
+                                <ComboBox x:Name="OutingStartTime" Width="80" SelectedIndex="{Binding OutingStartTime}">
+                                    <ComboBoxItem Content="17:00" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="17:30" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="18:00" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="18:30" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="19:00" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="19:30" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="20:00" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="20:30" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="21:00" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="21:30" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="22:00" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="22:30" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="23:00" HorizontalAlignment="Center" Width="77" />
+                                    <ComboBoxItem Content="23:30" HorizontalAlignment="Center" Width="77" />
+                                </ComboBox>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="외출 시작 시간" Width="90">
+                    <GridViewColumn Header="외출 복귀 시간" Width="100">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <ComboBox x:Name="OutingStartTime" Width="70" SelectedIndex="{Binding OutingStartTime}">
+                                <ComboBox x:Name ="OutingReturnTime" Width="70" SelectedIndex="{Binding OutingEndTime}">
                                     <ComboBoxItem Content="17:00" HorizontalAlignment="Center" Width="67" />
                                     <ComboBoxItem Content="17:30" HorizontalAlignment="Center" Width="67" />
                                     <ComboBoxItem Content="18:00" HorizontalAlignment="Center" Width="67" />
@@ -119,64 +134,35 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="외출 복귀 시간" Width="90">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <ComboBox x:Name ="OutingReturnTime" Width="70" SelectedIndex="{Binding OutingReturnTime}">
-                                    <ComboBoxItem Content="17:00" HorizontalAlignment="Center" Width="67" />
-                                    <ComboBoxItem Content="17:30" HorizontalAlignment="Center" Width="67" />
-                                    <ComboBoxItem Content="18:00" HorizontalAlignment="Center" Width="67" />
-                                    <ComboBoxItem Content="18:30" HorizontalAlignment="Center" Width="67" />
-                                    <ComboBoxItem Content="19:00" HorizontalAlignment="Center" Width="67" />
-                                    <ComboBoxItem Content="19:30" HorizontalAlignment="Center" Width="67" />
-                                    <ComboBoxItem Content="20:00" HorizontalAlignment="Center" Width="67" />
-                                    <ComboBoxItem Content="20:30" HorizontalAlignment="Center" Width="67" />
-                                    <ComboBoxItem Content="21:00" HorizontalAlignment="Center" Width="67" />
-                                    <ComboBoxItem Content="21:30" HorizontalAlignment="Center" Width="67" />
-                                    <ComboBoxItem Content="22:00" HorizontalAlignment="Center" Width="67" />
-                                    <ComboBoxItem Content="22:30" HorizontalAlignment="Center" Width="67" />
-                                    <ComboBoxItem Content="23:00" HorizontalAlignment="Center" Width="67" />
-                                    <ComboBoxItem Content="23:30" HorizontalAlignment="Center" Width="67" />
-                                </ComboBox>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="학원 여부" Width="60">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox Tag="Academy" IsChecked="{Binding Academy}" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="월" Width="40">
+                    <GridViewColumn Header="월" Width="52">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <CheckBox Tag="Monday" IsChecked="{Binding Monday}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="화" Width="40">
+                    <GridViewColumn Header="화" Width="52">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <CheckBox Tag="Tuesday" IsChecked="{Binding Tuesday}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="수" Width="40">
+                    <GridViewColumn Header="수" Width="52">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <CheckBox Tag="Wednesday" IsChecked="{Binding Wednesday}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="목" Width="40">
+                    <GridViewColumn Header="목" Width="52">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <CheckBox Tag="Thursday" IsChecked="{Binding Thursday}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="금" Width="40">
+                    <GridViewColumn Header="금" Width="52">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <CheckBox Tag="Friday" IsChecked="{Binding Friday}" />
