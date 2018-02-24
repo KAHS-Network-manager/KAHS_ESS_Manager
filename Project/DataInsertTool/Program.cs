@@ -5,10 +5,11 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Microsoft.Office.Interop.Excel;
 using Common;
+using Common.Window;
 
 namespace DataInsertTool
 {
-    struct StudentData
+    internal struct StudentData
     {
         public string Name;
         public string Number;
@@ -21,7 +22,7 @@ namespace DataInsertTool
     {
         private const int Hide = 0;
         private const int Show = 5;
-
+        
         [DllImport("kernel32.dll")]
         private static extern IntPtr GetConsoleWindow();
 

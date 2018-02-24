@@ -62,11 +62,23 @@
     <Compile Include="Data\OutingData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\StudentData.cs" />
-    <Compile Include="Interaction.cs" />
+    <Compile Include="Window\Interaction.cs" />
+    <Compile Include="Window\NoticeBoard.xaml.cs" />
+    <Compile Include="Window\WriteBoard.xaml.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Window\NoticeBoard.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Window\WriteBoard.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
