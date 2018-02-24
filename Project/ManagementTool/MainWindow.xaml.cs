@@ -7,8 +7,9 @@ using System.Windows;
 using System.Windows.Controls;
 using Common;
 using Common.Data;
+using Common.Window;
 
-namespace ManagementTool.Windows
+namespace ManagementTool
 {
     public partial class MainWindow
     {

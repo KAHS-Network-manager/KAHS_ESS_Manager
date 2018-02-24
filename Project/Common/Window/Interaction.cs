@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Common
+namespace Common.Window
 {
     public class Interaction
     {
