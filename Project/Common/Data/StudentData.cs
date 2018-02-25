@@ -84,6 +84,13 @@ namespace Common.Data
         public int AcademyStartTime { get; set; }
         public int AcademyEndTime { get; set; }
         public string Remarks { get; set; }
+        
+        // 내부변수
+        private string Mon => Monday ? "Y" : "N";
+        private string Tue => Tuesday ? "Y" : "N";
+        private string Wed => Wednesday ? "Y" : "N";
+        private string Thu => Thursday ? "Y" : "N";
+        private string Fri => Friday ? "Y" : "N";
 
         public string Sql
         {
@@ -100,8 +107,7 @@ namespace Common.Data
 
                     sql +=
                             $"AcademyStart='{GetTimeFromIndex(AcademyStartTime)}',AcademyEnd='{GetTimeFromIndex(AcademyEndTime)}'," +
-                            $"Monday='{(Monday ? "Y" : "N")}',Tuesday='{(Tuesday ? "Y" : "N")}',Wednesday='{(Wednesday ? "Y" : "N")}',Thursday='{(Thursday ? "Y" : "N")}',Friday='{(Friday ? "Y" : "N")}',Remarks='{Remarks}',";
-
+                            $"Monday='{Mon}',Tuesday='{Tue}',Wednesday='{Wed}',Thursday='{Thu}',Friday='{Fri}',Remarks='{Remarks}',";
 
                     /*
                      * 위에서 SQL을 만들었을 때 이 SQL이
