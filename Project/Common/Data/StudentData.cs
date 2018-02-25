@@ -31,8 +31,14 @@ namespace Common.Data
         {
             Name = data["Name"].ToString();
             Number = data["Number"].ToString();
-
-
+            
+            /*
+             * 0 : 작화실
+             * 1 : 기숙사
+             * 2 : 외출
+             * 3 : 학원
+             * 4 : 출석안함
+             */
             EssStatus = data[DateTime.Today.ToString("dddd", new CultureInfo("en-US"))].Equals("Y")
                 ? 3
                 : data["Outing"].Equals("Y")
@@ -54,7 +60,9 @@ namespace Common.Data
             AcademyEndTime = GetIndexFromTime(data["AcademyEnd"].ToString());
             Remarks = data["Remarks"].ToString();
         }
-
+      
+        // XAML 연동 변수
+        
         // 개인 정보
         public string Name { get; set; }
         public string Number { get; set; }
@@ -94,6 +102,18 @@ namespace Common.Data
                             $"AcademyStart='{GetTimeFromIndex(AcademyStartTime)}',AcademyEnd='{GetTimeFromIndex(AcademyEndTime)}'," +
                             $"Monday='{(Monday ? "Y" : "N")}',Tuesday='{(Tuesday ? "Y" : "N")}',Wednesday='{(Wednesday ? "Y" : "N")}',Thursday='{(Thursday ? "Y" : "N")}',Friday='{(Friday ? "Y" : "N")}',Remarks='{Remarks}',";
 
+
+                    /*
+                     * 위에서 SQL을 만들었을 때 이 SQL이
+                     * Monday='Y', Tues.... 이렇게 만들어져 있다.
+                     * 이 때 오늘 날짜에 학원을 가는지에 대한 여부를 확인하는 코드이다.
+                     *
+                     * Example (오늘이 월요일일 경우)
+                     * today = "Monday";
+                     * sql 내에서 Monday='Y' 일 경우
+                     * idx = sql.IndexOf(today) (today string이 sql에서 위치하고있는 pos) + today.Length + 2 ( "='" 이 두 characters)
+                     * sql[idx] 는 Y를 가지고 있게 된다.
+                     */
                     var today = DateTime.Today.ToString("dddd", new CultureInfo("en-US"));
                     if (sql[sql.IndexOf(today, StringComparison.Ordinal) + today.Length + 2] == 'Y')
                         EssStatus = 3;
