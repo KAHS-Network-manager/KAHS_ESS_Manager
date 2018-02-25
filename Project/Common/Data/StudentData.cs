@@ -127,7 +127,7 @@ namespace Common.Data
                 else
                 {
                     sql += "AcademyStart=NULL, AcademyEnd=NULL," +
-                    "Monday=\'N\',Tuesday=\'N\',Wednesday=\'N\',Thursday=\'N\',Friday=\'N\',Remarks=NULL,";
+                    "Monday='N',Tuesday='N',Wednesday='N',Thursday='N',Friday='N',Remarks=NULL,";
                 }
 
                 sql += $"Ess='{(EssStatus == 0 ? "Y" : "N")}'," +
