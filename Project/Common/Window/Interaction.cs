@@ -6,7 +6,7 @@ namespace Common.Window
 {
     public class Interaction
     {
-        public static DialogResult InputBox(string title, string promptText, ref string value)
+        public static DialogResult InputBox(string title, string promptText, out string value)
         {
             var form = new Form();
             var label = new Label();
@@ -16,7 +16,7 @@ namespace Common.Window
 
             form.Text = title;
             label.Text = promptText;
-            textBox.Text = value;
+            textBox.Text = string.Empty;
 
             buttonOk.Text = "OK";
             buttonCancel.Text = "Cancel";

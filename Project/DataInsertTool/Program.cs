@@ -34,12 +34,12 @@ namespace DataInsertTool
             var consoleWindow = GetConsoleWindow();
             ShowWindow(consoleWindow, Hide);
 
-            var fileName = string.Empty;
-            var sheetName = string.Empty;
+            string fileName;
+            string sheetName;
 
             while (true)
             { 
-                if (Interaction.InputBox("파일 이름 입력", "파일 이름을 입력 해 주세요", ref fileName)
+                if (Interaction.InputBox("파일 이름 입력", "파일 이름을 입력 해 주세요", out fileName)
                     .Equals(DialogResult.Cancel))
                 {
                     return;
@@ -59,7 +59,7 @@ namespace DataInsertTool
                     continue;
                 }
 
-                if (Interaction.InputBox("시트 이름 입력", "엑셀 시트의 이름을 입력 해 주세요", ref sheetName)
+                if (Interaction.InputBox("시트 이름 입력", "엑셀 시트의 이름을 입력 해 주세요", out sheetName)
                     .Equals(DialogResult.Cancel))
                     return;
                 break;
