@@ -99,6 +99,7 @@ namespace DataInsertTool
                 Database.Connect("");
                 for (var i = 0; i < studentsData.Count; ++i)
                 {
+                    // 1프로에 한번씩 ProgressBar 진행시키는 코드
                     rate += (double) 1 / studentsData.Count;
                     if (rate >= 0.01d)
                     {

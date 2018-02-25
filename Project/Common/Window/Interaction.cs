@@ -55,8 +55,8 @@ namespace Common.Window
 
             form.Text = title;
             progress.Minimum = 0;
-            progress.Maximum = 150;
-            progress.Step = 2;
+            progress.Maximum = 100;
+            progress.Step = 1;
 
             form.ClientSize = new Size(396, 107);
             progress.SetBounds(12, 37, 372, 20);
