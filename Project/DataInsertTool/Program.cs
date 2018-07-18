@@ -73,6 +73,11 @@ namespace DataInsertTool
             {
                 return;
             }
+
+            // g is grade
+            // c is class
+            // n is number
+            // m is number of record currently being explored
             for (int g = 0, m = 2; g < 3; ++g, ++m)
             for (var c = 1; (excel.Worksheet.Cells[3, m] as Range)?.Value != null; m += 2, ++c)
             for (var n = 3; (excel.Worksheet.Cells[n, m] as Range)?.Value != null; ++n)
@@ -132,19 +137,20 @@ namespace DataInsertTool
 
                 using (var cmd = Database.GetCommand(preperformSql))
                 {
-<<<<<<< HEAD
                     cmd.ExecuteNonQuery();
                 }
-=======
-                    // 1프로에 한번씩 ProgressBar 진행시키는 코드
+                    // 1프로에 한번씩 ProgressBar 를 진행 시키는 코드
                     rate += (double) 1 / studentsData.Count;
                     if (rate >= 0.01d)
                     {
                         progressbar.PerformStep();
                         rate -= 0.01d;
                     }
->>>>>>> 4b1595ed3adc1cd91b58cf5eac0d1b051d561943
 
+                    var sql = string.Empty;
+
+                    // SQL 을 하나의 Variable 에 모아서 한번에 DB에 쿼리함.
+                    // 하나씩 보내는 것 보다 훨씬 속도가 빠름
                     for (var i = 0; i < studentsData.Count; ++i)
                     {
                         rate += (double)1 / studentsData.Count;
@@ -153,16 +159,15 @@ namespace DataInsertTool
                             progressbar.PerformStep();
                             rate -= 0.01d;
                         }
-
-                        var sql =
+                        sql +=
                             "INSERT INTO Student(`Number`,`Name`,`Grade`,`Class`,`RoomNumber`) " +
-                            $"values({studentsData[i].Number},'{studentsData[i].Name}',{studentsData[i].Grade},{studentsData[i].Class},{studentsData[i].RoomNumber});";
-                        using (var cmd = Database.GetCommand(sql))
-                        {
-                            cmd.ExecuteNonQuery();
-                        }
+                            $"VALUES({studentsData[i].Number},'{studentsData[i].Name}',{studentsData[i].Grade},{studentsData[i].Class},{studentsData[i].RoomNumber});";
                     }
-                MessageBox.Show("데이터 입력이 완료되었습니다", "작업 성공", MessageBoxButtons.OK);
+                using (var cmd = Database.GetCommand(sql))
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                MessageBox.Show("데이터 입력을 완료하였습니다.", "작업 성공", MessageBoxButtons.OK);
             }
             catch (Exception e)
             {
