@@ -88,7 +88,7 @@ namespace DataInsertTool
                     RoomNumber = ((Range) excel.Worksheet.Cells[n, m + 1])?.Value.ToString()
                 });
             }
-
+            
             excel.Release();
 
             var form = Interaction.LoadingBox("데이터 입력 작업중", out var progressbar);
@@ -96,23 +96,61 @@ namespace DataInsertTool
             try
             {
                 Database.Connect("");
-                for (var i = 0; i < studentsData.Count; ++i)
-                {
-                    rate += (double) 1 / studentsData.Count;
-                    if (rate >= 0.01d)
-                    {
-                        progressbar.PerformStep();
-                        rate -= 0.01d;
-                    }
 
-                    var sql =
-                        "INSERT INTO Student(`Number`,`Name`,`Grade`,`Class`,`RoomNumber`) " +
-                        $"values({studentsData[i].Number},'{studentsData[i].Name}',{studentsData[i].Grade},{studentsData[i].Class},{studentsData[i].RoomNumber});";
-                    using (var cmd = Database.GetCommand(sql))
-                    {
-                        cmd.ExecuteNonQuery();
-                    }
+                const string preperformSql =
+                    // Table `Message`
+                    "DROP TABLE IF EXISTS `Message`" +
+                    "CREATE TABLE Message(" +
+                    "`Index` int NOT NULL AUTO_INCREMENT," +
+                    "Title varchar(20) NOT NULL," +
+                    "Content varchar(100) NOT NULL," +
+                    "Date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP," +
+                    "CONSTRAINT Message_pk PRIMARY KEY(`Index`));" +
+                    // Table `Student`
+                    "DROP TABLE IF EXISTS `Student`" +
+                    "CREATE TABLE Student(" +
+                    "Number char(4) NOT NULL," +
+                    "Name varchar(5) NOT NULL," +
+                    "RoomNumber char(3) NOT NULL," +
+                    "Grade char(1) NOT NULL," +
+                    "Class char(1) NOT NULL," +
+                    "Ess char(1) NOT NULL DEFAULT 'N'," +
+                    "Dormitory char(1) NOT NULL DEFAULT 'N'," +
+                    "Outing char(1) NOT NULL DEFAULT 'N'," +
+                    "OutingStart char(5) NULL," +
+                    "OutingEnd char(5) NULL," +
+                    "AcademyStart char(5) NULL," +
+                    "AcademyEnd char(5) NULL," +
+                    "Monday char(1) NULL," +
+                    "Tuesday char(1) NULL," +
+                    "Wednesday char(1) NULL," +
+                    "Thursday char(1) NULL," +
+                    "Friday char(1) NULL," +
+                    "Remarks varchar(50) NULL," +
+                    "CONSTRAINT Student_pk PRIMARY KEY(Number));";
+
+                using (var cmd = Database.GetCommand(preperformSql))
+                {
+                    cmd.ExecuteNonQuery();
                 }
+
+                    for (var i = 0; i < studentsData.Count; ++i)
+                    {
+                        rate += (double)1 / studentsData.Count;
+                        if (rate >= 0.01d)
+                        {
+                            progressbar.PerformStep();
+                            rate -= 0.01d;
+                        }
+
+                        var sql =
+                            "INSERT INTO Student(`Number`,`Name`,`Grade`,`Class`,`RoomNumber`) " +
+                            $"values({studentsData[i].Number},'{studentsData[i].Name}',{studentsData[i].Grade},{studentsData[i].Class},{studentsData[i].RoomNumber});";
+                        using (var cmd = Database.GetCommand(sql))
+                        {
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
                 MessageBox.Show("데이터 입력이 완료되었습니다", "작업 성공", MessageBoxButtons.OK);
             }
             catch (Exception e)

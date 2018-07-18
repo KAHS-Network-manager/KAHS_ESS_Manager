@@ -1,0 +1,8 @@
+D:\Document\GitHub\KAHS_ESS_Manager\Project\Output\DataInsertTool\DataInsertTool.exe.config
+D:\Document\GitHub\KAHS_ESS_Manager\Project\Output\DataInsertTool\DataInsertTool.exe
+D:\Document\GitHub\KAHS_ESS_Manager\Project\Output\DataInsertTool\DataInsertTool.pdb
+D:\Document\GitHub\KAHS_ESS_Manager\Project\DataInsertTool\obj\Debug\DataInsertTool.csprojAssemblyReference.cache
+D:\Document\GitHub\KAHS_ESS_Manager\Project\DataInsertTool\obj\Debug\DataInsertTool.csproj.CoreCompileInputs.cache
+D:\Document\GitHub\KAHS_ESS_Manager\Project\DataInsertTool\obj\Debug\DataInsertTool.csproj.CopyComplete
+D:\Document\GitHub\KAHS_ESS_Manager\Project\DataInsertTool\obj\Debug\DataInsertTool.exe
+D:\Document\GitHub\KAHS_ESS_Manager\Project\DataInsertTool\obj\Debug\DataInsertTool.pdb
