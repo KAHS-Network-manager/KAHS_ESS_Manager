@@ -8,9 +8,10 @@ using System.Windows.Controls;
 using Microsoft.Office.Interop.Excel;
 using Common;
 using Common.Data;
+using Common.Window;
 using Application = System.Windows.Application;
 
-namespace InquryTool.Windows
+namespace InquryTool
 {
     public partial class MainWindow
     {

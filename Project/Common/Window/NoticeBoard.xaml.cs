@@ -3,10 +3,9 @@ using System.Data;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using Common;
 using Common.Data;
 
-namespace InquryTool.Windows
+namespace Common.Window
 {
     public partial class NoticeBoard
     {
@@ -18,14 +17,13 @@ namespace InquryTool.Windows
         {
             InitializeComponent();
 
+            // 게시글을 가져오는 쿼리
             #region Excute Query
 
-            // 게시판 전체 조회 - 최근순
             const string sql = 
                 "SELECT * " +
                 "FROM Message " +
                 "ORDER BY Date DESC";
-
             try
             {
                 using (var adapter = Database.GetAdapter(sql))
@@ -44,17 +42,21 @@ namespace InquryTool.Windows
                 complete = false;
                 Close();
             }
+
             complete = true;
             _shouldRun = true;
 
             #endregion
 
+            // 초당 한번씩 DB에서 메시지를 가져오는 스레드
             #region AutoRefreshing
 
             new Thread(() =>
             {
                 while (_shouldRun)
                 {
+                    // 추가한 스레드 에서는 WPF 컴포넌트의 스레드를 거쳐서 WPF 변수의 값을 바꿀 수 있음
+                    
                     using (var adapter = Database.GetAdapter(sql))
                     using (var datas = new DataSet())
                     {
@@ -95,6 +97,18 @@ namespace InquryTool.Windows
             NoticeContent.Text = msg.Content;
         }
 
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            _shouldRun = false;
+
+            if (_writeBoard != null && _writeBoard.IsLoaded)
+            {
+                _writeBoard.Close();
+            }
+
+            _writeBoard = null;
+        }
+
         private void OpenWriteBoard(object sender, RoutedEventArgs e)
         {
             while (true)
@@ -111,18 +125,6 @@ namespace InquryTool.Windows
                 }
                 break;
             }
-        }
-
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            _shouldRun = false;
-
-            if (_writeBoard != null && _writeBoard.IsLoaded)
-            {
-                _writeBoard.Close();
-            }
-
-            _writeBoard = null;
         }
     }
 }

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Windows;
-using Common;
 
-namespace ManagementTool.Windows
+namespace Common.Window
 {     
     public partial class WriteBoard
     {

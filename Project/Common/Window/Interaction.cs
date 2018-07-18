@@ -2,11 +2,11 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Common
+namespace Common.Window
 {
     public class Interaction
     {
-        public static DialogResult InputBox(string title, string promptText, ref string value)
+        public static DialogResult InputBox(string title, string promptText, out string value)
         {
             var form = new Form();
             var label = new Label();
@@ -16,7 +16,7 @@ namespace Common
 
             form.Text = title;
             label.Text = promptText;
-            textBox.Text = value;
+            textBox.Text = string.Empty;
 
             buttonOk.Text = "OK";
             buttonCancel.Text = "Cancel";
@@ -55,8 +55,8 @@ namespace Common
 
             form.Text = title;
             progress.Minimum = 0;
-            progress.Maximum = 150;
-            progress.Step = 2;
+            progress.Maximum = 100;
+            progress.Step = 1;
 
             form.ClientSize = new Size(396, 107);
             progress.SetBounds(12, 37, 372, 20);
