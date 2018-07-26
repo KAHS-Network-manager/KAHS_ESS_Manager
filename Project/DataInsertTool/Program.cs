@@ -20,14 +20,16 @@ namespace DataInsertTool
 
     public class Program
     {
+        #region Window
         private const int Hide = 0;
         private const int Show = 5;
-        
+
         [DllImport("kernel32.dll")]
         private static extern IntPtr GetConsoleWindow();
 
         [DllImport("user32.dll")]
         private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+        #endregion   
 
         private static void Main()
         {
@@ -44,7 +46,7 @@ namespace DataInsertTool
                 {
                     return;
                 }
-
+                var nowdir = Environment.CurrentDirectory;
                 if (File.Exists($"{Environment.CurrentDirectory}\\{fileName}.xls"))
                 {
                     fileName += ".xls";
@@ -74,17 +76,42 @@ namespace DataInsertTool
                 return;
             }
 
+            // count of iteration when iterate students in each class.
+            var iterCnt = 0;
+
+            for (var i = 3; ; ++i)
+            {
+                if (!int.TryParse((excel.Worksheet.Cells[i, 1] as Range)?.Value.ToString(), out int temporaryResult))
+                {
+                    break;
+                }
+                iterCnt = Math.Max(iterCnt, temporaryResult);
+            }
+
+            // 1 was been bind with 3.
+            // so we have to add 2 to iterCnt. 
+            iterCnt += 2;
+
             // g is grade
             // c is class
             // n is number
             // m is number of record currently being explored
-            for (int g = 0, m = 2; g < 3; ++g, ++m)
-            for (var c = 1; (excel.Worksheet.Cells[3, m] as Range)?.Value != null; m += 2, ++c)
-            for (var n = 3; (excel.Worksheet.Cells[n, m] as Range)?.Value != null; ++n)
-            {
-                if (((Range) excel.Worksheet.Cells[n, m + 1]).Value is null)
-                    continue;
 
+            // first for state: counting grade
+            for (int g = 0, m = 2; g < 3; ++g, ++m)
+            // second for state: counting class.
+            // condition: check that cell [3, m]'s value(it has name of first student in that class) is blank. if that cell is blank, we already searched all students in this worksheet.
+            for (var c = 1; (excel.Worksheet.Cells[3, m] as Range)?.Value != null; m += 2, ++c)
+            // last for state: counting number.
+            // for state condition: this for state iterate by the number that we calculated.
+            // inner condition: if there is not value in cells of name and room number, it will get over to next student.
+            for (var n = 3; n <= iterCnt; ++n)
+            {
+                if (
+                            ((Range) excel.Worksheet.Cells[n, m]).Value is null || // Name
+                            ((Range) excel.Worksheet.Cells[n, m + 1]).Value is null // Room number
+                    ) continue;
+                
                 studentsData.Add(new StudentData
                 {
                     Number = ((g + 1) * 1000 + c * 100 + (n - 2)).ToString(),
@@ -94,7 +121,7 @@ namespace DataInsertTool
                     RoomNumber = ((Range) excel.Worksheet.Cells[n, m + 1])?.Value.ToString()
                 });
             }
-            
+        
             excel.Release();
 
             var form = Interaction.LoadingBox("데이터 입력 작업중", out var progressbar);
