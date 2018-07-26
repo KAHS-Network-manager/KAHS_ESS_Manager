@@ -7,8 +7,8 @@ namespace Common
 {
     public class Excel
     {
-        private readonly MsExcel.Application _excelApp;
-        private readonly MsExcel.Workbook _workbook;
+        private MsExcel.Application _excelApp;
+        private MsExcel.Workbook _workbook;
         public MsExcel.Worksheet Worksheet { get; set; }
 
         public Excel(string dirPath, string fileName)
@@ -52,20 +52,10 @@ namespace Common
         public void Release()
         {
             _workbook.Close(false);
-            ReleaseExcelObject(_excelApp);
-        }
-
-        private static void ReleaseExcelObject(object obj)
-        {
-            try
-            {
-                if (obj == null) return;
-                Marshal.ReleaseComObject(obj);
-            }
-            finally
-            {
-                GC.Collect();
-            }
+            _workbook = null;
+            _excelApp.Quit();
+            Marshal.ReleaseComObject(_excelApp);
+            _excelApp = null;
         }
     }
 }
